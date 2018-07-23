@@ -150,25 +150,23 @@ public int uniquePathsWithObstacles(int[][] obstacleGrid) {
 
 //64. Minimum Path Sum
 public int minPathSum(int[][] grid) {
-	int m = grid.length;// row
-	int n = grid[0].length; // column
-	for (int i = 0; i < m; i++) {
-		for (int j = 0; j < n; j++) {
-			if (i == 0 && j != 0) {
-				grid[i][j] = grid[i][j] + grid[i][j - 1];
-			} else if (i != 0 && j == 0) {
-				grid[i][j] = grid[i][j] + grid[i - 1][j];
-			} else if (i == 0 && j == 0) {
-				grid[i][j] = grid[i][j];
-			} else {
-				grid[i][j] = Math.min(grid[i][j - 1], grid[i - 1][j])
-						+ grid[i][j];
-			}
-		}
-	}
-
-	return grid[m - 1][n - 1];
-}
+        int m = grid.length;
+        int n = grid[0].length;
+        int[][] dp = new int[m][n];
+        dp[0][0] = grid[0][0];
+        for(int i = 1; i < m; i++){
+            dp[i][0] = dp[i-1][0]+grid[i][0];
+        }
+        for(int j = 1; j < n; j++){
+            dp[0][j] = dp[0][j-1]+grid[0][j];
+        }
+        for(int i = 1; i < m; i++){
+            for(int j = 1; j < n; j++){
+                dp[i][j] = Math.min(dp[i-1][j],dp[i][j-1]) + grid[i][j]; 
+            }
+        }
+        return dp[m-1][n-1];
+    }
 
 //66. Plus One
 public int[] plusOne(int[] digits) {
@@ -191,34 +189,25 @@ public int[] plusOne(int[] digits) {
 
 //73. Set Matrix Zeroes
 public void setZeroes(int[][] matrix) {
-    boolean fr = false,fc = false;
-    for(int i = 0; i < matrix.length; i++) {
-        for(int j = 0; j < matrix[0].length; j++) {
-            if(matrix[i][j] == 0) {
-                if(i == 0) fr = true;
-                if(j == 0) fc = true;
+    int m = matrix.length, n = matrix[0].length;
+    int col0 = 1;
+    for(int i = 0; i < m; i++){
+        if(matrix[i][0] == 0) col0 = 0;
+        for(int j = 1; j < n; j++){
+            if(matrix[i][j] == 0){
+                matrix[i][0] = 0; 
                 matrix[0][j] = 0;
-                matrix[i][0] = 0;
             }
         }
     }
-    for(int i = 1; i < matrix.length; i++) {
-        for(int j = 1; j < matrix[0].length; j++) {
-            if(matrix[i][0] == 0 || matrix[0][j] == 0) {
-                matrix[i][j] = 0;
-            }
+    
+    for(int i = m-1;i>=0;i--){
+        for(int j = n-1; j>=1;j--){
+            if(matrix[i][0] == 0 || matrix[0][j] == 0) matrix[i][j] = 0;
         }
+        if(col0==0) matrix[i][0] = 0;
     }
-    if(fr) {
-        for(int j = 0; j < matrix[0].length; j++) {
-            matrix[0][j] = 0;
-        }
-    }
-    if(fc) {
-        for(int i = 0; i < matrix.length; i++) {
-            matrix[i][0] = 0;
-        }
-    }
+}
 
 //74. Search a 2D Matrix
 public boolean searchMatrix(int[][] matrix, int target) {
