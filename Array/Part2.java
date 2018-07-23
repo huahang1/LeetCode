@@ -295,105 +295,105 @@ public int removeDuplicates(int[] nums) {
 
 //81. Search in Rotated Sorted Array II
 public boolean search(int[] nums, int target) {
-        int start = 0, end = nums.length - 1, mid = -1;
-        while(start <= end) {
-            mid = (start + end) / 2;
-            if (nums[mid] == target) {
-                return true;
-            }
-            //If we know for sure right side is sorted or left side is unsorted
-            if (nums[mid] < nums[end] || nums[mid] < nums[start]) {
-                if (target > nums[mid] && target <= nums[end]) {
-                    start = mid + 1;
-                } else {
-                    end = mid - 1;
+        if(nums.length == 0 || nums == null) return false;
+        int left = 0, right = nums.length-1;
+        while(left <= right){
+            int mid = left + (right-left)/2;
+            if(nums[mid] == target) return true;
+            if(nums[left] == nums[mid] && nums[right] == nums[mid]){
+                left++; right--;
+            }else{
+                if(nums[left] <= nums[mid]){
+                    if(nums[left] <= target && target <nums[mid]){
+                        right = mid-1;
+                    }else{
+                        left = mid+1;
+                    }
+                }else{
+                    if(nums[mid] < target && target <= nums[right]){
+                        left = mid+1;
+                    }else{
+                        right = mid-1;
+                    }
                 }
-            //If we know for sure left side is sorted or right side is unsorted
-            } else if (nums[mid] > nums[start] || nums[mid] > nums[end]) {
-                if (target < nums[mid] && target >= nums[start]) {
-                    end = mid - 1;
-                } else {
-                    start = mid + 1;
-                }
-            //If we get here, that means nums[start] == nums[mid] == nums[end], then shifting out
-            //any of the two sides won't change the result but can help remove duplicate from
-            //consideration, here we just use end-- but left++ works too
-            } else {
-                end--;
             }
         }
-
         return false;
-    }
+}
 
 //84. Largest Rectangle in Histogram
-public class Solution {
-    public int largestRectangleArea(int[] height) {
-        int len = height.length;
-        Stack<Integer> s = new Stack<Integer>();
-        int maxArea = 0;
-        for(int i = 0; i <= len; i++){
-            int h = (i == len ? 0 : height[i]);
-            if(s.isEmpty() || h >= height[s.peek()]){
-                s.push(i);
-            }else{
-                int tp = s.pop();
-                maxArea = Math.max(maxArea, height[tp] * (s.isEmpty() ? i : i - 1 - s.peek()));
-                i--;
-            }
+public int largestRectangleArea(int[] heights) {
+    if(heights.length == 0) return 0;
+    if(heights.length == 1) return heights[0];
+    int res = 0, i = 0, j = 0;
+    Stack<Integer> stack = new Stack<Integer>();
+    while(i <= heights.length){
+        int height = i == heights.length ? 0 : heights[i];
+        if(stack.isEmpty() || height >heights[stack.peek()]){
+            stack.push(i++);
+        }else{
+            height = heights[stack.pop()];
+            j = stack.isEmpty() ? -1 : stack.peek();
+            res = Math.max(res,height*(i-j-1));
         }
-        return maxArea;
     }
+    return res;
 }
 
 //85. Maximal Rectangle
-int maximalRectangle(vector<vector<char> > &matrix) {
-    if(matrix.empty()) return 0;
-    const int m = matrix.size();
-    const int n = matrix[0].size();
-    int left[n], right[n], height[n];
-    fill_n(left,n,0); fill_n(right,n,n); fill_n(height,n,0);
-    int maxA = 0;
-    for(int i=0; i<m; i++) {
-        int cur_left=0, cur_right=n;
-        for(int j=0; j<n; j++) { // compute height (can do this from either side)
-            if(matrix[i][j]=='1') height[j]++;
-            else height[j]=0;
-        }
-        for(int j=0; j<n; j++) { // compute left (from left to right)
-            if(matrix[i][j]=='1') left[j]=max(left[j],cur_left);
-            else {left[j]=0; cur_left=j+1;}
-        }
-        // compute right (from right to left)
-        for(int j=n-1; j>=0; j--) {
-            if(matrix[i][j]=='1') right[j]=min(right[j],cur_right);
-            else {right[j]=n; cur_right=j;}
-        }
-        // compute the area of rectangle (can do this from either side)
-        for(int j=0; j<n; j++)
-            maxA = max(maxA,(right[j]-left[j])*height[j]);
-    }
-    return maxA;
+public int maximalRectangle(char[][] matrix) {
+       if(matrix.length == 0 || matrix == null) return 0;
+       int m = matrix.length; 
+       int n = matrix[0].length;
+       int[] left = new int[n];
+       int[] right = new int[n];
+       int[] height = new int[n];
+       Arrays.fill(right,n);
+       int res = 0;
+       for(int i = 0; i < m; i++){
+           int cur_left = 0, cur_right = n;
+           for(int j = 0; j < n; j++){
+               if(matrix[i][j] == '1'){
+                   height[j]++;
+               }else{
+                   height[j] = 0;
+               }
+           }
+           for(int j = 0; j < n;j++){
+               if(matrix[i][j] == '1'){
+                   left[j] = Math.max(left[j],cur_left);
+               }else{
+                   left[j] = 0; cur_left = j+1;
+               }
+           }
+           for(int j = n-1; j >=0; j--){
+               if(matrix[i][j] == '1'){
+                   right[j] = Math.min(right[j],cur_right);
+               }else{
+                   right[j] = n; cur_right= j;
+               }
+           }
+           for(int j = 0; j < n; j++){
+               res = Math.max(res,height[j]*(right[j]-left[j]));
+           }
+       }
+       return res;
 }
 
 //88. Merge Sorted Array
-class Solution {
-public:
-    void merge(int A[], int m, int B[], int n) {
-        int i=m-1;
-		int j=n-1;
-		int k = m+n-1;
-		while(i >=0 && j>=0)
-		{
-			if(A[i] > B[j])
-				A[k--] = A[i--];
-			else
-				A[k--] = B[j--];
-		}
-		while(j>=0)
-			A[k--] = B[j--];
+public void merge(int[] nums1, int m, int[] nums2, int n) {
+    int i = m-1, j = n-1, k = m+n-1;
+    while(i>=0 && j>=0){
+        if(nums1[i]>nums2[j]){
+            nums1[k--] = nums1[i--];
+        }else{
+            nums1[k--] = nums2[j--];
+        }
     }
-};
+    while(j>=0){
+        nums1[k--]=nums2[j--];
+    }
+}
 
 //90. Subsets II
 public List<List<Integer>> subsetsWithDup(int[] nums) {
