@@ -1,0 +1,328 @@
+============================================================================================================================================
+766. Toeplitz Matrix
+A matrix is Toeplitz if every diagonal from top-left to bottom-right has the same element.
+
+Now given an M x N matrix, return True if and only if the matrix is Toeplitz.
+ 
+
+Example 1:
+
+Input:
+matrix = [
+  [1,2,3,4],
+  [5,1,2,3],
+  [9,5,1,2]
+]
+Output: True
+Explanation:
+In the above grid, the diagonals are:
+"[9]", "[5, 5]", "[1, 1, 1]", "[2, 2, 2]", "[3, 3]", "[4]".
+In each diagonal all elements are the same, so the answer is True.
+
+============================================================================================================================================
+768. Max Chunks To Make Sorted II
+This question is the same as "Max Chunks to Make Sorted" except the integers of the given array are not necessarily distinct, the input array could be up to length 2000, and the elements could be up to 10**8.
+
+Given an array arr of integers (not necessarily distinct), we split the array into some number of "chunks" (partitions), and individually sort each chunk.  After concatenating them, the result equals the sorted array.
+
+What is the most number of chunks we could have made?
+
+Example 1:
+
+Input: arr = [5,4,3,2,1]
+Output: 1
+Explanation:
+Splitting into two or more chunks will not return the required result.
+For example, splitting into [5, 4], [3, 2, 1] will result in [4, 5, 1, 2, 3], which isn't sorted.
+Example 2:
+
+Input: arr = [2,1,3,4,4]
+Output: 4
+Explanation:
+We can split into two chunks, such as [2, 1], [3, 4, 4].
+However, splitting into [2, 1], [3], [4], [4] is the highest number of chunks possible.
+
+============================================================================================================================================
+769. Max Chunks To Make Sorted
+Given an array arr that is a permutation of [0, 1, ..., arr.length - 1], we split the array into some number of "chunks" (partitions), and individually sort each chunk.  After concatenating them, the result equals the sorted array.
+
+What is the most number of chunks we could have made?
+
+Example 1:
+
+Input: arr = [4,3,2,1,0]
+Output: 1
+Explanation:
+Splitting into two or more chunks will not return the required result.
+For example, splitting into [4, 3], [2, 1, 0] will result in [3, 4, 0, 1, 2], which isn't sorted.
+Example 2:
+
+Input: arr = [1,0,2,3,4]
+Output: 4
+Explanation:
+We can split into two chunks, such as [1, 0], [2, 3, 4].
+However, splitting into [1, 0], [2], [3], [4] is the highest number of chunks possible.
+
+============================================================================================================================================
+775. Global and Local Inversions
+We have some permutation A of [0, 1, ..., N - 1], where N is the length of A.
+
+The number of (global) inversions is the number of i < j with 0 <= i < j < N and A[i] > A[j].
+
+The number of local inversions is the number of i with 0 <= i < N and A[i] > A[i+1].
+
+Return true if and only if the number of global inversions is equal to the number of local inversions.
+
+Example 1:
+
+Input: A = [1,0,2]
+Output: true
+Explanation: There is 1 global inversion, and 1 local inversion.
+Example 2:
+
+Input: A = [1,2,0]
+Output: false
+Explanation: There are 2 global inversions, and 1 local inversion.
+
+============================================================================================================================================
+782. Transform to Chessboard
+An N x N board contains only 0s and 1s. In each move, you can swap any 2 rows with each other, or any 2 columns with each other.
+
+What is the minimum number of moves to transform the board into a "chessboard" - a board where no 0s and no 1s are 4-directionally adjacent? If the task is impossible, return -1.
+
+Examples:
+Input: board = [[0,1,1,0],[0,1,1,0],[1,0,0,1],[1,0,0,1]]
+Output: 2
+Explanation:
+One potential sequence of moves is shown below, from left to right:
+
+0110     1010     1010
+0110 --> 1010 --> 0101
+1001     0101     1010
+1001     0101     0101
+
+The first move swaps the first and second column.
+The second move swaps the second and third row.
+
+
+Input: board = [[0, 1], [1, 0]]
+Output: 0
+Explanation:
+Also note that the board with 0 in the top left corner,
+01
+10
+
+is also a valid chessboard.
+
+Input: board = [[1, 0], [1, 0]]
+Output: -1
+Explanation:
+No matter what sequence of moves you make, you cannot end with a valid chessboard.
+
+============================================================================================================================================
+792. Number of Matching Subsequences
+Given string S and a dictionary of words words, find the number of words[i] that is a subsequence of S.
+
+Example :
+Input: 
+S = "abcde"
+words = ["a", "bb", "acd", "ace"]
+Output: 3
+Explanation: There are three words in words that are a subsequence of S: "a", "acd", "ace".
+
+============================================================================================================================================
+795. Number of Subarrays with Bounded Maximum
+We are given an array A of positive integers, and two positive integers L and R (L <= R).
+
+Return the number of (contiguous, non-empty) subarrays such that the value of the maximum array element in that subarray is at least L and at most R.
+
+Example :
+Input: 
+A = [2, 1, 4, 3]
+L = 2
+R = 3
+Output: 3
+Explanation: There are three subarrays that meet the requirements: [2], [2, 1], [3].
+
+============================================================================================================================================
+825. Friends Of Appropriate Ages
+Some people will make friend requests. The list of their ages is given and ages[i] is the age of the ith person. 
+
+Person A will NOT friend request person B (B != A) if any of the following conditions are true:
+
+age[B] <= 0.5 * age[A] + 7
+age[B] > age[A]
+age[B] > 100 && age[A] < 100
+Otherwise, A will friend request B.
+
+Note that if A requests B, B does not necessarily request A.  Also, people will not friend request themselves.
+
+How many total friend requests are made?
+
+Example 1:
+
+Input: [16,16]
+Output: 2
+Explanation: 2 people friend request each other.
+Example 2:
+
+Input: [16,17,18]
+Output: 2
+Explanation: Friend requests are made 17 -> 16, 18 -> 17.
+Example 3:
+
+Input: [20,30,100,110,120]
+Output: 
+Explanation: Friend requests are made 110 -> 100, 120 -> 110, 120 -> 100.
+
+============================================================================================================================================
+830. Positions of Large Groups
+In a string S of lowercase letters, these letters form consecutive groups of the same character.
+
+For example, a string like S = "abbxxxxzyy" has the groups "a", "bb", "xxxx", "z" and "yy".
+
+Call a group large if it has 3 or more characters.  We would like the starting and ending positions of every large group.
+
+The final answer should be in lexicographic order.
+
+ 
+
+Example 1:
+
+Input: "abbxxxxzzy"
+Output: [[3,6]]
+Explanation: "xxxx" is the single large group with starting  3 and ending positions 6.
+Example 2:
+
+Input: "abc"
+Output: []
+Explanation: We have "a","b" and "c" but no large group.
+Example 3:
+
+Input: "abcdddeeeeaabbbcd"
+Output: [[3,5],[6,9],[12,14]]
+
+============================================================================================================================================
+832. Flipping an Image
+Given a binary matrix A, we want to flip the image horizontally, then invert it, and return the resulting image.
+
+To flip an image horizontally means that each row of the image is reversed.  For example, flipping [1, 1, 0] horizontally results in [0, 1, 1].
+
+To invert an image means that each 0 is replaced by 1, and each 1 is replaced by 0. For example, inverting [0, 1, 1] results in [1, 0, 0].
+
+Example 1:
+
+Input: [[1,1,0],[1,0,1],[0,0,0]]
+Output: [[1,0,0],[0,1,0],[1,1,1]]
+Explanation: First reverse each row: [[0,1,1],[1,0,1],[0,0,0]].
+Then, invert the image: [[1,0,0],[0,1,0],[1,1,1]]
+Example 2:
+
+Input: [[1,1,0,0],[1,0,0,1],[0,1,1,1],[1,0,1,0]]
+Output: [[1,1,0,0],[0,1,1,0],[0,0,0,1],[1,0,1,0]]
+Explanation: First reverse each row: [[0,0,1,1],[1,0,0,1],[1,1,1,0],[0,1,0,1]].
+Then invert the image: [[1,1,0,0],[0,1,1,0],[0,0,0,1],[1,0,1,0]]
+
+============================================================================================================================================
+835. Image Overlap
+Two images A and B are given, represented as binary, square matrices of the same size.  (A binary matrix has only 0s and 1s as values.)
+
+We translate one image however we choose (sliding it left, right, up, or down any number of units), and place it on top of the other image.  After, the overlap of this translation is the number of positions that have a 1 in both images.
+
+(Note also that a translation does not include any kind of rotation.)
+
+What is the largest possible overlap?
+
+Example 1:
+
+Input: A = [[1,1,0],
+            [0,1,0],
+            [0,1,0]]
+       B = [[0,0,0],
+            [0,1,1],
+            [0,0,1]]
+Output: 3
+Explanation: We slide A to right by 1 unit and down by 1 unit.
+
+============================================================================================================================================
+840. Magic Squares In Grid
+A 3 x 3 magic square is a 3 x 3 grid filled with distinct numbers from 1 to 9 such that each row, column, and both diagonals all have the same sum.
+
+Given an grid of integers, how many 3 x 3 "magic square" subgrids are there?  (Each subgrid is contiguous).
+
+ 
+
+Example 1:
+
+Input: [[4,3,8,4],
+        [9,5,1,9],
+        [2,7,6,2]]
+Output: 1
+Explanation: 
+The following subgrid is a 3 x 3 magic square:
+438
+951
+276
+
+while this one is not:
+384
+519
+762
+
+In total, there is only one magic square inside the given grid.
+
+============================================================================================================================================
+849. Maximize Distance to Closest Person
+In a row of seats, 1 represents a person sitting in that seat, and 0 represents that the seat is empty. 
+
+There is at least one empty seat, and at least one person sitting.
+
+Alex wants to sit in the seat such that the distance between him and the closest person to him is maximized. 
+
+Return that maximum distance to closest person.
+
+Example 1:
+
+Input: [1,0,0,0,1,0,1]
+Output: 2
+Explanation: 
+If Alex sits in the second open seat (seats[2]), then the closest person has distance 2.
+If Alex sits in any other open seat, the closest person has distance 1.
+Thus, the maximum distance to the closest person is 2.
+Example 2:
+
+Input: [1,0,0,0]
+Output: 3
+Explanation: 
+If Alex sits in the last seat, the closest person is 3 seats away.
+This is the maximum distance possible, so the answer is 3.
+
+============================================================================================================================================
+
+
+
+============================================================================================================================================
+
+
+
+============================================================================================================================================
+
+
+
+============================================================================================================================================
+
+
+
+============================================================================================================================================
+
+
+
+============================================================================================================================================
+
+
+
+============================================================================================================================================
+
+
+
+============================================================================================================================================
