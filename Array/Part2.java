@@ -211,41 +211,37 @@ public void setZeroes(int[][] matrix) {
 
 //74. Search a 2D Matrix
 public boolean searchMatrix(int[][] matrix, int target) {
-       int n = matrix.length();
-       int m = matrix[0].length();
-       int l = 0, r = m * n - 1;
-       while (l != r){
-           int mid = (l + r - 1) >> 1;
-           if (matrix[mid / m][mid % m] < target)
-               l = mid + 1;
-           else
-               r = mid;
-       }
-       return matrix[r / m][r % m] == target;
-   }
+        if(matrix.length == 0 || matrix == null) return false;
+        int m = matrix.length;
+        int n = matrix[0].length;
+        int start = 0, end = m*n-1;
+        while(start<=end){
+            int mid = start + (end-start)/2;
+            if(matrix[mid/n][mid%n] == target){
+                return true;
+            }else if(matrix[mid/n][mid%n] < target){
+                start = mid+1;
+            }else{
+                end = mid-1;
+            }
+        }
+        return false;
+}
 
 //75. Sort Colors
-public void sortColors(int[] A) {
-       if(A==null || A.length<2) return;
-       int low = 0;
-       int high = A.length-1;
-       for(int i = low; i<=high;) {
-           if(A[i]==0) {
-              // swap A[i] and A[low] and i,low both ++
-              int temp = A[i];
-              A[i] = A[low];
-              A[low]=temp;
-              i++;low++;
-           }else if(A[i]==2) {
-               //swap A[i] and A[high] and high--;
-              int temp = A[i];
-              A[i] = A[high];
-              A[high]=temp;
-              high--;
-           }else {
-               i++;
-           }
-       }
+public void sortColors(int[] nums) {
+    int zero = 0, second = nums.length-1;
+    for(int i = 0; i <= second; i++){
+        //move 2 to the most right and move 0 to the most left
+        while(nums[i] == 2 && i < second) swap(nums,i,second--);
+        while(nums[i] == 0 && i > zero) swap(nums,i,zero++);
+    }
+}
+
+private void swap(int[] nums, int i , int j){
+    int tmp = nums[i];
+    nums[i] = nums[j];
+    nums[j] = tmp;
 }
 
 //78. Subsets
@@ -268,26 +264,24 @@ private void backtrack(List<List<Integer>> list , List<Integer> tempList, int []
 
 //79. Word Search
 public boolean exist(char[][] board, String word) {
-    char[] w = word.toCharArray();
-    for (int y=0; y<board.length; y++) {
-    	for (int x=0; x<board[y].length; x++) {
-    		if (exist(board, y, x, w, 0)) return true;
-    	}
+    for(int i = 0; i < board.length; i++){
+        for(int j = 0; j < board[i].length;j++){
+            if(check(board,i,j,word,0)) return true;
+        }
     }
     return false;
 }
 
-private boolean exist(char[][] board, int y, int x, char[] word, int i) {
-	if (i == word.length) return true;
-	if (y<0 || x<0 || y == board.length || x == board[y].length) return false;
-	if (board[y][x] != word[i]) return false;
-	board[y][x] ^= 256;
-	boolean exist = exist(board, y, x+1, word, i+1)
-		|| exist(board, y, x-1, word, i+1)
-		|| exist(board, y+1, x, word, i+1)
-		|| exist(board, y-1, x, word, i+1);
-	board[y][x] ^= 256;
-	return exist;
+private boolean check(char[][] board, int i , int j, String word, int index){
+    if(index == word.length()) return true;
+    if(i < 0 || j < 0 || i == board.length || j == board[i].length || board[i][j] != word.charAt(index)) return false;
+    //mark current position as visited
+    board[i][j] = '*';
+    boolean res = check(board,i-1,j,word,index+1) || check(board,i+1,j,word,index+1) 
+                ||check(board,i,j-1,word,index+1) || check(board,i,j+1,word,index+1);
+    //change the input back
+    board[i][j] = word.charAt(index);
+    return res;
 }
 
 //80. Remove Duplicates from Sorted Array II
