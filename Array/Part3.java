@@ -1,28 +1,22 @@
 //106. Construct Binary Tree from Inorder and Postorder Traversal
 public TreeNode buildTree(int[] inorder, int[] postorder) {
-    return buildTree(inorder, inorder.length-1, 0, postorder, postorder.length-1);
+    return helper(postorder.length-1,inorder.length-1,0,inorder,postorder);
 }
 
-private TreeNode buildTree(int[] inorder, int inStart, int inEnd, int[] postorder,
-		int postStart) {
-	if (postStart < 0 || inStart < inEnd)
-		return null;
-	
-	//The last element in postorder is the root.
-	TreeNode root = new TreeNode(postorder[postStart]);
-	
-	//find the index of the root from inorder. Iterating from the end.
-	int rIndex = inStart;
-	for (int i = inStart; i >= inEnd; i--) {
-		if (inorder[i] == postorder[postStart]) {
-			rIndex = i;
-			break;
-		}
-	}
-	//build right and left subtrees. Again, scanning from the end to find the sections.
-	root.right = buildTree(inorder, inStart, rIndex + 1, postorder, postStart-1);
-	root.left = buildTree(inorder, rIndex - 1, inEnd, postorder, postStart - (inStart - rIndex) -1);
-	return root;
+private TreeNode helper(int poEnd,int inStart, int inEnd,int[] inorder,int[] postorder){
+    if(poEnd < 0 || inStart < inEnd) return null;
+    TreeNode root = new TreeNode(postorder[poEnd]);
+    int inIndex = 0;
+    //get index from right to left
+    for(int i = inStart; i >= inEnd; i--){
+        if(inorder[i] == root.val){
+            inIndex = i;
+            break;
+        }
+    }
+    root.right = helper(poEnd-1,inStart,inIndex+1,inorder,postorder);
+    root.left = helper(poEnd-1-(inStart-inIndex),inIndex-1,inEnd,inorder,postorder);
+    return root;
 }
 
 //118. Pascal's Triangle
