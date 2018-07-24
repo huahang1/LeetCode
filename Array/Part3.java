@@ -27,8 +27,10 @@ public List<List<Integer>> generate(int numRows)
 	for(int i=0;i<numRows;i++)
 	{
 		row.add(0, 1);
-		for(int j=1;j<row.size()-1;j++)
-			row.set(j, row.get(j)+row.get(j+1));
+		for(int j=1;j<row.size()-1;j++){
+      row.set(j, row.get(j)+row.get(j+1));
+    }
+    //because arguments in method at java is passed by value instead of reference, so we need to create new space for each row
 		allrows.add(new ArrayList<Integer>(row));
 	}
 	return allrows;
