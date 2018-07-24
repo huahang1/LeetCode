@@ -255,89 +255,63 @@ public int findMin(int[] nums) {
 }
    
 //162. Find Peak Element
-public int findPeakElement(int[] num) {    
-    return helper(num,0,num.length-1);
+public int findPeakElement(int[] nums) {
+    return helper(nums,0,nums.length-1);
 }
 
-public int helper(int[] num,int start,int end){
+private int helper(int[] nums,int start,int end){
     if(start == end){
         return start;
-    }else if(start+1 == end){
-        if(num[start] > num[end]) return start;
-        return end;
+    }
+    int mid1 = start+(end-start)/2;
+    int mid2 = mid1+1;
+    if(nums[mid1]>nums[mid2]){
+        return helper(nums,start,mid1);
     }else{
-        
-        int m = (start+end)/2;
-        
-        if(num[m] > num[m-1] && num[m] > num[m+1]){
-
-            return m;
-
-        }else if(num[m-1] > num[m] && num[m] > num[m+1]){
-
-            return helper(num,start,m-1);
-
-        }else{
-
-            return helper(num,m+1,end);
-
-        }
-        
+        return helper(nums,mid2,end);
     }
 }
 
 //163. Missing Ranges
-public List<String> findMissingRanges(int[] a, int lo, int hi) {
-  List<String> res = new ArrayList<String>();
-  
-  // the next number we need to find
-  int next = lo;
-  
-  for (int i = 0; i < a.length; i++) {
-    // not within the range yet
-    if (a[i] < next) continue;
-    
-    // continue to find the next one
-    if (a[i] == next) {
-      next++;
-      continue;
+public List<String> findMissingRanges(int[] nums, int lower, int upper) {
+    List<String> res = new ArrayList<String>();
+    int next = lower;
+    for(int i : nums){
+        if(i < next) continue;
+        if(i==next){
+            next++;
+            if(next == Integer.MIN_VALUE) return res;
+            continue;
+        }
+        res.add(getRange(next,i-1));
+        next = i+1;
+        if(next == Integer.MIN_VALUE) return res;
     }
-    
-    // get the missing range string format
-    res.add(getRange(next, a[i] - 1));
-    
-    // now we need to find the next number
-    next = a[i] + 1;
-  }
-  
-  // do a final check
-  if (next <= hi) res.add(getRange(next, hi));
-
-  return res;
+    if(next <= upper) res.add(getRange(next,upper));
+    return res;
 }
 
-String getRange(int n1, int n2) {
+private String getRange(int n1, int n2) {
   return (n1 == n2) ? String.valueOf(n1) : String.format("%d->%d", n1, n2);
 }
 
 //167. Two Sum II - Input array is sorted
-public int[] twoSum(int[] num, int target) {
-    int[] indice = new int[2];
-    if (num == null || num.length < 2) return indice;
-    int left = 0, right = num.length - 1;
-    while (left < right) {
-        int v = num[left] + num[right];
-        if (v == target) {
-            indice[0] = left + 1;
-            indice[1] = right + 1;
+public int[] twoSum(int[] numbers, int target) {
+    int[] res = new int[2];
+    int left = 0, right = numbers.length-1;
+    while(left < right){
+        int sum = numbers[left]+numbers[right];
+        if(sum == target){
+            res[0] = left+1;
+            res[1] = right+1;
             break;
-        } else if (v > target) {
-            right --;
-        } else {
-            left ++;
+        }else if(sum > target){
+            right--;
+        }else{
+            left++;
         }
     }
-    return indice;
+    return res;
 }
 
 //169. Majority Element
@@ -377,42 +351,36 @@ public void reverse(int[] nums, int start, int end) {
 }
 
 //209. Minimum Size Subarray Sum
-public int minSubArrayLen(int s, int[] a) {
-  if (a == null || a.length == 0)
-    return 0;
-  
-  int i = 0, j = 0, sum = 0, min = Integer.MAX_VALUE;
-  
-  while (j < a.length) {
-    sum += a[j++];
-    
-    while (sum >= s) {
-      min = Math.min(min, j - i);
-      sum -= a[i++];
-    }
-  }
-  
-  return min == Integer.MAX_VALUE ? 0 : min;
+public int minSubArrayLen(int s, int[] nums) {
+    int min = Integer.MAX_VALUE;
+    int sum = 0, i = 0, j = 0;
+    for(i = 0; i < nums.length; i++){
+        sum += nums[i];
+        while(sum >= s){
+            min = Math.min(min,i-j+1);
+            sum -= nums[j++];
+        }
+    }  
+    return min == Integer.MAX_VALUE ? 0 : min;
 }
 
 //216. Combination Sum III
 public List<List<Integer>> combinationSum3(int k, int n) {
-   List<List<Integer>> ans = new ArrayList<>();
-   combination(ans, new ArrayList<Integer>(), k, 1, n);
-   return ans;
+    List<List<Integer>> res = new ArrayList<>();
+    helper(res,new ArrayList<Integer>(),k,1,n);
+    return res;
 }
-
-private void combination(List<List<Integer>> ans, List<Integer> comb, int k,  int start, int n) {
- if (comb.size() == k && n == 0) {
-   List<Integer> li = new ArrayList<Integer>(comb);
-   ans.add(li);
-   return;
- }
- for (int i = start; i <= 9; i++) {
-   comb.add(i);
-   combination(ans, comb, k, i+1, n-i);
-   comb.remove(comb.size() - 1);
- }
+private void helper(List<List<Integer>> res, List<Integer> tmp, int size, int start, int target){
+    if(tmp.size() == size && target == 0){
+        res.add(new ArrayList<Integer>(tmp));
+        return;
+    }
+    if(tmp.size() == size) return;
+    for(int i = start; i <=9; i++){
+        tmp.add(i);
+        helper(res,tmp,size,i+1,target-i);
+        tmp.remove(tmp.size()-1);
+    }
 }
 
 //217. Contains Duplicate
