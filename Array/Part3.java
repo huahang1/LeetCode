@@ -221,46 +221,38 @@ public int maxProduct(int[] nums) {
 }
 
 //153. Find Minimum in Rotated Sorted Array
-int findMin(int[] num) {
-       int start=0,end=num.length()-1;
-       
-       while (start<end) {
-           if (num[start]<num[end])
-               return num[start];
-           
-           int mid = (start+end)/2;
-           
-           if (num[mid]>=num[start]) {
-               start = mid+1;
-           } else {
-               end = mid;
-           }
-       }
-       
-       return num[start];
-   }
+public int findMin(int[] nums) {
+    int start = 0, end = nums.length-1;
+    while(start < end){
+        if(nums[start]<nums[end]) return nums[start];
+        int mid = start + (end-start)/2;
+        //compare nums[mid] to the biggest value, obviously here nums[start] already >= nums[end]
+        if(nums[mid]>=nums[start]){
+            start = mid+1;
+        }else{
+            end = mid;
+        }
+    }
+    return nums[start];
+}
    
 //154. Find Minimum in Rotated Sorted Array II
-int findMin(vector<int> &num) {
-       int lo = 0;
-       int hi = num.size() - 1;
-       int mid = 0;
-       
-       while(lo < hi) {
-           mid = lo + (hi - lo) / 2;
-           
-           if (num[mid] > num[hi]) {
-               lo = mid + 1;
-           }
-           else if (num[mid] < num[hi]) {
-               hi = mid;
-           }
-           else { // when num[mid] and num[hi] are same
-               hi--;
-           }
-       }
-       return num[lo];
-   }
+public int findMin(int[] nums) {
+    int start = 0, end = nums.length-1;
+    while(start < end){
+        if(nums[start]<nums[end]) return nums[start];
+        int mid = start + (end-start)/2;
+        if(nums[mid]>nums[start]){
+            start = mid+1;
+        }else if(nums[mid]<nums[start]){
+            end = mid;
+        }else{
+            //skip duplicates
+            start++;
+        }
+    }
+    return nums[start];
+}
    
 //162. Find Peak Element
 public int findPeakElement(int[] num) {    
