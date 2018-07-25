@@ -9,59 +9,56 @@ public boolean containsNearbyDuplicate(int[] nums, int k) {
  }
  
  //228. Summary Ranges
- List<String> list=new ArrayList();
-	if(nums.length==1){
-		list.add(nums[0]+"");
-		return list;
-	}
-    for(int i=0;i<nums.length;i++){
-    	int a=nums[i];
-    	while(i+1<nums.length&&(nums[i+1]-nums[i])==1){
-    		i++;
-    	}
-    	if(a!=nums[i]){
-    		list.add(a+"->"+nums[i]);
-    	}else{
-    		list.add(a+"");
-    	}
-    }
-    return list;
+ public List<String> summaryRanges(int[] nums) {
+     List<String> res = new ArrayList<String>();
+     for(int i = 0; i < nums.length;i++){
+         int curr = nums[i];
+         while(i+1<nums.length && nums[i] +1 == nums[i+1]){
+             i++;
+         }
+         if(curr != nums[i]){
+             res.add(curr+"->"+nums[i]);
+         }else{
+             res.add(curr+"");
+         }
+     }
+     return res;
+ }
 
 //229. Majority Element II
 public List<Integer> majorityElement(int[] nums) {
-	if (nums == null || nums.length == 0)
-		return new ArrayList<Integer>();
-	List<Integer> result = new ArrayList<Integer>();
-	int number1 = nums[0], number2 = nums[0], count1 = 0, count2 = 0, len = nums.length;
-	for (int i = 0; i < len; i++) {
-		if (nums[i] == number1)
-			count1++;
-		else if (nums[i] == number2)
-			count2++;
-		else if (count1 == 0) {
-			number1 = nums[i];
-			count1 = 1;
-		} else if (count2 == 0) {
-			number2 = nums[i];
-			count2 = 1;
-		} else {
-			count1--;
-			count2--;
-		}
-	}
-	count1 = 0;
-	count2 = 0;
-	for (int i = 0; i < len; i++) {
-		if (nums[i] == number1)
-			count1++;
-		else if (nums[i] == number2)
-			count2++;
-	}
-	if (count1 > len / 3)
-		result.add(number1);
-	if (count2 > len / 3)
-		result.add(number2);
-	return result;
+    List<Integer> res = new ArrayList<Integer>();
+    if(nums.length==0 ||nums==null) return res;
+    int n1 = nums[0], n2 = nums[0], count1 = 0, count2=0,len = nums.length;
+    for(int i = 0; i < len;i++){
+        int curr = nums[i];
+        if(curr == n1){
+            count1++;
+        }else if(curr == n2){
+            count2++;
+        }else if(count1==0){
+            n1 = curr;
+            count1 = 1;
+        } else if(count2==0){
+            n2 = curr;
+            count2=1;
+        }else{
+            count1--;
+            count2--;
+        }
+    }
+    int f1 = 0, f2=0;
+    for(int i =0;i<len;i++){
+        int curr = nums[i];
+        if(curr == n1){
+            f1++;
+        }else if(curr == n2){
+            f2++;
+        }
+    }
+    if(f1>len/3) res.add(n1);
+    if(f2>len/3) res.add(n2);
+    return res;
 }
 
 //238. Product of Array Except Self
@@ -100,25 +97,27 @@ public int shortestDistance(String[] words, String word1, String word2) {
 
 //245. Shortest Word Distance III
 public int shortestWordDistance(String[] words, String word1, String word2) {
-    long dist = Integer.MAX_VALUE, i1 = dist, i2 = -dist;
-    for (int i=0; i<words.length; i++) {
-        if (words[i].equals(word1))
-            i1 = i;
-        if (words[i].equals(word2)) {
-            if (word1.equals(word2))
-                i1 = i2;
-            i2 = i;
+    int dist = Integer.MAX_VALUE, p1 = -1, p2 = -1;
+    for(int i = 0; i < words.length;i++){
+        if(words[i].equals(word1)){
+            p1 = i;
         }
-        dist = Math.min(dist, Math.abs(i1 - i2));
+        if(words[i].equals(word2)){
+            if(word1.equals(word2)){
+                p1 = p2;
+            }
+            p2 = i;
+        }
+        if(p1!=-1 && p2!=-1){
+            dist = Math.min(dist,Math.abs(p1-p2));
+        }
     }
-    return (int) dist;
+    return dist;
 }
 
 //259. 3Sum Smaller
-int count;
-    
 public int threeSumSmaller(int[] nums, int target) {
-        count = 0;
+        int count = 0;
         Arrays.sort(nums);
         int len = nums.length;
     
@@ -163,15 +162,19 @@ public int findCelebrity(int n) {
 
 //280. Wiggle Sort
 public void wiggleSort(int[] nums) {
-        for(int i=0;i<nums.length;i++)
-            if(i%2==1){
-               if(nums[i-1]>nums[i]) swap(nums, i);
-            }else if(i!=0 && nums[i-1]<nums[i]) swap(nums, i);
-    }
-    public void swap(int[] nums, int i){
-          int tmp=nums[i];
-          nums[i]=nums[i-1];
-          nums[i-1]=tmp;
+    for(int i = 0; i < nums.length;i++){
+        if(i%2==1){
+            if(nums[i-1]>nums[i]) swap(nums,i-1,i);
+        }else{
+            if(i!=0 && nums[i-1]<nums[i]) swap(nums,i-1,i);
+        }
+    }    
+}
+
+private void swap(int[] nums,int i, int j){
+    int tmp = nums[i];
+    nums[i] = nums[j];
+    nums[j] = tmp;
 }
 
 //283. Move Zeroes
@@ -189,7 +192,7 @@ public void moveZeroes(int[] nums) {
 }
 
 //287. Find the Duplicate Number
-int findDuplicate3(int[] nums)
+public int findDuplicate3(int[] nums)
 {
 	if (nums.length() > 1)
 	{
@@ -260,7 +263,7 @@ public int[] getModifiedArray(int length, int[][] updates) {
         int end = update[1];
         
         res[start] += value;
-        
+        //avoid adding value to the element out of range
         if(end < length - 1)
             res[end + 1] -= value;
         
@@ -329,8 +332,8 @@ public class RandomizedCollection {
     
     /** Inserts a value to the collection. Returns true if the collection did not already contain the specified element. */
     public boolean insert(int val) {
-        boolean contain = locs.containsKey(val);
-	    if ( ! contain ) locs.put( val, new LinkedHashSet<Integer>() ); 
+      boolean contain = locs.containsKey(val);
+	    if ( !contain ) locs.put( val, new LinkedHashSet<Integer>() ); 
 	    locs.get(val).add(nums.size());        
 	    nums.add(val);
 	    return ! contain ;
@@ -338,8 +341,8 @@ public class RandomizedCollection {
     
     /** Removes a value from the collection. Returns true if the collection contained the specified element. */
     public boolean remove(int val) {
-        boolean contain = locs.containsKey(val);
-	    if ( ! contain ) return false;
+      boolean contain = locs.containsKey(val);
+	    if ( !contain ) return false;
 	    int loc = locs.get(val).iterator().next();
 	    locs.get(val).remove(loc);
 	    if (loc < nums.size() - 1 ) {
@@ -383,33 +386,29 @@ public int thirdMax(int[] nums) {
 
 //442. Find All Duplicates in an Array
 public List<Integer> findDuplicates(int[] nums) {
-       List<Integer> res = new ArrayList<>();
-       for (int i = 0; i < nums.length; ++i) {
-           int index = Math.abs(nums[i])-1;
-           if (nums[index] < 0)
-               res.add(Math.abs(index+1));
-           nums[index] = -nums[index];
-       }
-       return res;
-   }
+    List<Integer> res = new ArrayList<Integer>();
+    for(int i = 0; i < nums.length;i++){
+        int index = Math.abs(nums[i])-1;
+        if(nums[index]<0) res.add(index+1);
+        nums[index] = -nums[index];
+    }
+    return res;
+}
    
 //448. Find All Numbers Disappeared in an Array
 public List<Integer> findDisappearedNumbers(int[] nums) {
-        List<Integer> ret = new ArrayList<Integer>();
-        
-        for(int i = 0; i < nums.length; i++) {
-            int val = Math.abs(nums[i]) - 1;
-            if(nums[val] > 0) {
-                nums[val] = -nums[val];
-            }
+    List<Integer> res = new ArrayList<Integer>();
+    for(int i = 0; i < nums.length;i++){
+        int index = Math.abs(nums[i])-1;
+        if(nums[index] > 0){
+            nums[index] = -nums[index];
         }
-        
-        for(int i = 0; i < nums.length; i++) {
-            if(nums[i] > 0) {
-                ret.add(i+1);
-            }
-        }
-        return ret;
+    }
+    
+    for(int i = 0; i < nums.length;i++){
+        if(nums[i]>0) res.add(i+1);
+    }
+    return res;
 }
 
 //485. Max Consecutive Ones
