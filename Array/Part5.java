@@ -87,9 +87,9 @@ public int findBlackPixel(char[][] picture, int N) {
         }
         
         return result;
-    }
+}
     
-    private String scanRow(char[][] picture, int row, int target, int[] colCount) {
+private String scanRow(char[][] picture, int row, int target, int[] colCount) {
         int n = picture[0].length;
         int rowCount = 0;
         StringBuilder sb = new StringBuilder();
@@ -104,7 +104,7 @@ public int findBlackPixel(char[][] picture, int N) {
         
         if (rowCount == target) return sb.toString();
         return "";
-    }
+}
     
 //548. Split Array with Equal Sum
 public boolean splitArray(int[] nums) {
