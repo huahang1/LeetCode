@@ -320,79 +320,81 @@ public double findMaxAverage(int[] nums, int k) {
 }
 
 //644. Maximum Average Subarray II
-boolean check(int[] nums,int k,double x) //Check whether we can find a subarray whose average is bigger than x
-   {
-       int n=nums.length;
-       double[] a=new double[n];
-       for (int i=0;i<n;i++) a[i]=nums[i]-x; //Transfer to a[i], find whether there is a subarray whose sum is bigger than 0
-       double now=0,last=0;
-       for (int i=0;i<k;i++) now+=a[i];
-       if (now>=0) return true;
-       for (int i=k;i<n;i++)
-       {
-           now+=a[i];
-           last+=a[i-k];
-           if (last<0) 
-           {
-               now-=last;
-               last=0;
-           }
-           if (now>=0) return true;
-       }
-       return false;
-   }
-   public double findMaxAverage(int[] nums, int k) {
-       double l=Integer.MIN_VALUE,r=Integer.MAX_VALUE;
-       while (r-l>0.000004) //Binary search the answer
-       {
-           double mid=(l+r)/2;
-           if (check(nums,k,mid)) l=mid; else r=mid;
-       }
-       return r;
-   }
+public double findMaxAverage(int[] nums, int k) {
+    double left = Integer.MIN_VALUE, right = Integer.MAX_VALUE;
+    while(right - left > 0.000001){
+        double mid = (left+right)/2;
+        if(check(nums,k,mid)){
+            left = mid;
+        }else{
+            right = mid;
+        }
+    }
+    return left;
+}
+
+private boolean check(int[] nums, int k, double x){
+    double sum = 0, tmp = 0;
+    double[] a = new double[nums.length];
+    for(int i = 0; i < a.length;i++){
+        a[i] = nums[i]-x;
+    }
+    for(int i = 0; i < k; i++){
+        sum += a[i];
+    }
+    if(sum>=0) return true;
+    for(int i = k; i<nums.length;i++){
+        sum+=a[i];
+        tmp += a[i-k];
+        //keep the length greater than k and remove smaller value
+        if(tmp < 0){
+            sum -= tmp;
+            tmp = 0;
+        }
+        if(sum >=0) return true;
+    }
+    return false;
+}
    
 //661. Image Smoother
 public int[][] imageSmoother(int[][] M) {
-        if (M == null) return null;
-        int rows = M.length;
-        if (rows == 0) return new int[0][];
-        int cols = M[0].length;
-
-        int result[][] = new int[rows][cols];
-
-        for (int row = 0; row < rows; row++) {
-            for (int col = 0; col < cols; col++) {
-                int count = 0;
-                int sum = 0;
-                for (int incR : new int[]{-1, 0, 1}) {
-                    for (int incC : new int[]{-1, 0, 1}) {
-                        if (isValid(row + incR, col + incC, rows, cols)) {
-                            count++;
-                            sum += M[row + incR][col + incC];
-                        }
+    if(M == null || M.length == 0) return null;
+    int m = M.length;
+    if(M[0] == null || M[0].length == 0) return null;
+    int n = M[0].length;
+    int[][] res = new int[m][n];
+    for(int i = 0; i < m; i++){
+        for(int j = 0; j < n; j++){
+            int count = 0, sum = 0;
+            for(int x : new int[]{-1,0,1}){
+                for(int y : new int[]{-1,0,1}){
+                    if(isValid(i+x,j+y,m,n)){
+                        count++;
+                        sum+=M[i+x][j+y];
                     }
                 }
-                result[row][col] = sum / count;
             }
+            res[i][j] = sum / count;
         }
-
-        return result;
-
     }
-
-    private boolean isValid(int x, int y, int rows, int cols) {
-        return x >= 0 && x < rows && y >= 0 && y < cols;
-    }
+    return res;
+}
+private boolean isValid(int i, int j, int m, int n){
+    return i>=0 && i<m && j>=0 && j<n;
+}
     
 //665. Non-decreasing Array
 public boolean checkPossibility(int[] nums) {
-        int cnt = 0;                                                                    //the number of changes
-        for(int i = 1; i < nums.length && cnt<=1 ; i++){
-            if(nums[i-1] > nums[i]){
-                cnt++;
-                if(i-2<0 || nums[i-2] <= nums[i])nums[i-1] = nums[i];                    //modify nums[i-1] of a priority
-                else nums[i] = nums[i-1];                                                //have to modify nums[i]
+    int count = 0;
+    for(int i = 1; i < nums.length && count<=1; i++){
+        if(nums[i-1]>nums[i]){
+            count++;
+            if(i-2<0 || nums[i-2]<nums[i]){
+                nums[i-1]=nums[i];
+            }else{
+                nums[i] = nums[i-1];
             }
         }
-        return cnt<=1; 
-    }    
+    }
+    return count<=1;
+} 
