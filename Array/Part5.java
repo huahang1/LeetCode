@@ -116,7 +116,7 @@ public boolean splitArray(int[] nums) {
             sum[i] = sum[i - 1] + nums[i];
         }
         for (int j = 3; j < nums.length - 3; j++) {
-            HashSet < Integer > set = new HashSet < > ();
+            HashSet <Integer> set = new HashSet <> ();
             for (int i = 1; i < j - 1; i++) {
                 if (sum[i - 1] == sum[j - 1] - sum[i])
                     set.add(sum[i - 1]);
@@ -131,19 +131,16 @@ public boolean splitArray(int[] nums) {
 
 //560. Subarray Sum Equals K
 public int subarraySum(int[] nums, int k) {
-        int sum = 0, result = 0;
-        Map<Integer, Integer> preSum = new HashMap<>();
-        preSum.put(0, 1);
-        
-        for (int i = 0; i < nums.length; i++) {
-            sum += nums[i];
-            if (preSum.containsKey(sum - k)) {
-                result += preSum.get(sum - k);
-            }
-            preSum.put(sum, preSum.getOrDefault(sum, 0) + 1);
-        }
-        
-        return result;
+    Map<Integer,Integer> map = new HashMap<Integer,Integer>();
+    //if current sum matches target, count 1
+    map.put(0,1);
+    int sum = 0, count = 0;
+    for(int i = 0; i < nums.length;i++){
+        sum += nums[i];
+        count += map.getOrDefault(sum-k,0);
+        map.put(sum,map.getOrDefault(sum,0)+1);
+    }
+    return count;
 }
 
 //561. Array Partition I
@@ -194,11 +191,13 @@ public int arrayNesting(int[] a) {
 
 //566. Reshape the Matrix
 public int[][] matrixReshape(int[][] nums, int r, int c) {
-    int n = nums.length, m = nums[0].length;
-    if (r*c != n*m) return nums;
+    if(nums.length == 0 || nums == null) return null;
+    int m = nums.length, n = nums[0].length;
+    if(m*n != r*c) return nums;
     int[][] res = new int[r][c];
-    for (int i=0;i<r*c;i++) 
-        res[i/c][i%c] = nums[i/m][i%m];
+    for(int i = 0; i < r*c; i++){
+        res[i/c][i%c] = nums[i/n][i%n];
+    }
     return res;
 }
 
@@ -233,17 +232,19 @@ public boolean canPlaceFlowers(int[] flowerbed, int n) {
    }
    
 //611. Valid Triangle Number
-public static int triangleNumber(int[] A) {
-    Arrays.sort(A);
-    int count = 0, n = A.length;
-    for (int i=n-1;i>=2;i--) {
-        int l = 0, r = i-1;
-        while (l < r) {
-            if (A[l] + A[r] > A[i]) {
-                count += r-l;
-                r--;
+public int triangleNumber(int[] nums) {
+    Arrays.sort(nums);
+    int count = 0;
+    if(nums.length <3) return 0;
+    for(int i = nums.length-1;i>=2;i--){
+        int left = 0, right = i-1;
+        while(left < right){
+            if(nums[left]+nums[right]>nums[i]){
+                count+= right-left;
+                right--;
+            }else{
+                left++;
             }
-            else l++;
         }
     }
     return count;
