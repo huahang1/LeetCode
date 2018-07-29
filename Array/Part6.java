@@ -41,17 +41,27 @@ public int findLengthOfLCIS(int[] nums) {
 
 //683. K Empty Slots
 public int kEmptySlots(int[] flowers, int k) {
-        int[] days =  new int[flowers.length];
-        for(int i=0; i<flowers.length; i++)days[flowers[i] - 1] = i + 1;
-        int left = 0, right = k + 1, res = Integer.MAX_VALUE;
-        for(int i = 0; right < days.length; i++){
-            if(days[i] < days[left] || days[i] <= days[right]){
-                if(i == right)res = Math.min(res, Math.max(days[left], days[right]));   //we get a valid subarray
-                left = i; 
-                right = k + 1 + i;
-            }
+    int[] days = new int[flowers.length];
+    for (int i = 0; i < days.length; i++) {
+        days[flowers[i] - 1] = i + 1;
+    }
+    int left = 0;
+    int right = k + 1;
+    int res = Integer.MAX_VALUE;
+    for (int i = 1; right < days.length; i++) {
+        // current days[i] is valid, continue scanning
+        if (days[i] > days[left] && days[i] > days[right]) {
+            continue;
         }
-        return (res == Integer.MAX_VALUE)?-1:res;
+       // reach boundary of sliding window, since previous number are all valid, record result  
+        if (i == right) {
+            res = Math.min(res, Math.max(days[left],days[right]));
+        }
+        // not valid, move the sliding window
+        left = i;
+        right = left + k + 1;
+    }
+    return res == Integer.MAX_VALUE ? -1 : res;
 }
 
 //689. Maximum Sum of 3 Non-Overlapping Subarrays
@@ -93,19 +103,22 @@ public int[] maxSumOfThreeSubarrays(int[] nums, int k) {
 
 //695. Max Area of Island
 public int maxAreaOfIsland(int[][] grid) {
-        int max_area = 0;
-        for(int i = 0; i < grid.length; i++)
-            for(int j = 0; j < grid[0].length; j++)
-                if(grid[i][j] == 1)max_area = Math.max(max_area, AreaOfIsland(grid, i, j));
-        return max_area;
-    }
-    
-    public int AreaOfIsland(int[][] grid, int i, int j){
-        if( i >= 0 && i < grid.length && j >= 0 && j < grid[0].length && grid[i][j] == 1){
-            grid[i][j] = 0;
-            return 1 + AreaOfIsland(grid, i+1, j) + AreaOfIsland(grid, i-1, j) + AreaOfIsland(grid, i, j-1) + AreaOfIsland(grid, i, j+1);
+    int max = 0;
+    for(int i = 0; i < grid.length; i++){
+        for(int j = 0; j < grid[0].length;j++){
+            if(grid[i][j] == 1){
+                max = Math.max(max,helper(grid,i,j));
+            }
         }
-        return 0;
+    }
+    return max;
+}
+private int helper(int[][] grid, int i, int j){
+    if(i>=0 && i < grid.length && j>=0 && j < grid[0].length && grid[i][j] == 1){
+        grid[i][j] = 0;
+        return 1 + helper(grid,i-1,j) + helper(grid,i+1,j) + helper(grid,i,j-1)+helper(grid,i,j+1);
+    }
+    return 0;
 }
 
 //697. Degree of an Array
@@ -227,13 +240,11 @@ class RangeModule {
 
 //717. 1-bit and 2-bit Characters
 public boolean isOneBitCharacter(int[] bits) {
-        int ones = 0;
-        //Starting from one but last, as last one is always 0.
-        for (int i = bits.length - 2; i >= 0 && bits[i] != 0 ; i--) { 
-            ones++;
-        }
-        if (ones % 2 > 0) return false; 
-        return true;
+    int ones = 0;
+    for(int i = bits.length-2;i>=0&&bits[i]!=0;i--){
+        ones++;
+    }
+    return ones%2>0 ? false : true;
 }
 
 //718. Maximum Length of Repeated Subarray
