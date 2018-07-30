@@ -434,9 +434,9 @@ public int jump(int[] nums) {
     for(int i = 0; i < nums.length-1;i++){
         //farthest place it could reach
         max = Math.max(max,nums[i]+i);
+        //update the target, setting for reaching so it could achieve minimum step goal(only jump when current element matches furthest)
         if(i == target){
             index++;
-            //update the target, setting for reaching so it could achieve minimum step goal
             target = max;
         }
     }
