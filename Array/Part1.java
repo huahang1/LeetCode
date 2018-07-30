@@ -310,24 +310,24 @@ public int search(int[] nums, int target) {
 }
 
 //34. Find First and Last Position of Element in Sorted Array
-public int[] searchRange(int[] A, int target) {
+public int[] searchRange(int[] nums, int target) {
      int[] res = {-1,-1};
      if(nums.length == 0 || nums == null) return res;
      int start = 0, end = nums.length-1;
-      while(i < j){
-        int mid = (i+j)/2;
-        if(A[mid] < target) i=mid+1;
-        else j = mid;
+      while(start < end){
+        int mid = (start+end)/2;
+        if(nums[mid] < target) start=mid+1;
+        else end = mid;
       }
-      if(A[i] != target) return res;
-      else res[0] = i;
-      j=0;
-      while(i < j){
-        int mid = (i+j)/2+1;
-        if(A[mid] > target) j = mid-1;
-        else i = mid;
+      if(nums[start] != target) return res;
+      else res[0] = start;
+      end=nums.length-1;
+      while(start < end){
+        int mid = (start+end)/2+1;
+        if(nums[mid] > target) end = mid-1;
+        else start = mid;
       }
-      res[1]=j;
+      res[1]=end;
       return res;
 }
   
