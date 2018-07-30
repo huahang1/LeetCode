@@ -34,22 +34,17 @@ public int maxChunksToSorted(int[] arr) {
 
 //769. Max Chunks To Make Sorted
 public int maxChunksToSorted(int[] arr) {
-        if (arr == null || arr.length == 0) return 0;
-        
-        int[] max = new int[arr.length];
-        max[0] = arr[0];
-        for (int i = 1; i < arr.length; i++) {
-            max[i] = Math.max(max[i - 1], arr[i]);
+    if (arr == null || arr.length == 0) return 0;
+    
+    int count = 0, max = 0;
+    for (int i = 0; i < arr.length; i++) {
+        max = Math.max(max, arr[i]);
+        if (max == i) {
+            count++;
         }
-        
-        int count = 0;
-        for (int i = 0; i < arr.length; i++) {
-            if (max[i] == i) {
-                count++;
-            }
-        }
-        
-        return count;
+    }
+    
+    return count;
 }
 
 //775. Global and Local Inversions
@@ -63,42 +58,58 @@ public boolean isIdealPermutation(int[] A) {
 }
 
 //782. Transform to Chessboard
-public int movesToChessboard(int[][] b) {
-    int N = b.length, rowSum = 0, colSum = 0, rowSwap = 0, colSwap = 0;
-    for (int i = 0; i < N; ++i) for (int j = 0; j < N; ++j)
-            if ((b[0][0] ^ b[i][0] ^ b[0][j] ^ b[i][j]) == 1) return -1;
-    for (int i = 0; i < N; ++i) {
-        rowSum += b[0][i];
-        colSum += b[i][0];
-        if (b[i][0] == i % 2) rowSwap ++;
-        if (b[0][i] == i % 2) colSwap ++ ;
+public int movesToChessboard(int[][] board) {
+    int N = board.length;
+    for(int i = 0; i < N;i++){
+        for(int j = 0; j < N;j++){
+            if((board[0][0] ^ board[0][j] ^ board[i][0] ^ board[i][j]) == 1){
+                return -1;
+            }
+        }
     }
-    if (N / 2 > rowSum || rowSum > (N + 1) / 2) return -1;
-    if (N / 2 > colSum || colSum > (N + 1) / 2) return -1;
-    if (N % 2 == 1) {
-        if (colSwap % 2 == 1) colSwap = N - colSwap;
-        if (rowSwap % 2 == 1) rowSwap = N - rowSwap;
-    } else {
-        colSwap = Math.min(N - colSwap, colSwap);
-        rowSwap = Math.min(N - rowSwap, rowSwap);
+    int colSum = 0, rowSum = 0, colSwap = 0, rowSwap = 0;
+    for(int i = 0; i < N;i++){
+        rowSum += board[0][i];
+        colSum += board[i][0];
+        //two ones can not stay together
+        if(board[0][i] == i%2) colSwap++;
+        if(board[i][0] == i%2) rowSwap++;
     }
-    return (colSwap + rowSwap) / 2;
+    if(N/2 > rowSum || (N+1)/2 < rowSum) return -1;
+    if(N/2 > colSum || (N+1)/2 < colSum) return -1;
+    if(N%2 == 1){
+        if(colSwap % 2 == 1) colSwap = N-colSwap;
+        if(rowSwap % 2 == 1) rowSwap = N-rowSwap;
+    }else{
+        colSwap = Math.min(colSwap,N-colSwap);
+        rowSwap = Math.min(rowSwap,N-rowSwap);
+    }
+    return (colSwap+rowSwap)/2;
 }
 
 //792. Number of Matching Subsequences
 public int numMatchingSubseq(String S, String[] words) {
-    List<Integer[]>[] waiting = new List[128];
-    for (int c = 0; c <= 'z'; c++)
-        waiting[c] = new ArrayList();
-    for (int i = 0; i < words.length; i++)
-        waiting[words[i].charAt(0)].add(new Integer[]{i, 1});
-    for (char c : S.toCharArray()) {
-        List<Integer[]> advance = new ArrayList(waiting[c]);
-        waiting[c].clear();
-        for (Integer[] a : advance)
-            waiting[a[1] < words[a[0]].length() ? words[a[0]].charAt(a[1]++) : 0].add(a);
+    Map<Character,Deque<String>> map = new HashMap<>();
+    for(char c='a';c<='z';c++){
+        map.putIfAbsent(c,new LinkedList<String>());
     }
-    return waiting[0].size();
+    for(String word:words){
+        map.get(word.charAt(0)).addLast(word);
+    }
+    int count = 0;
+    for(char c : S.toCharArray()){
+        Deque<String> queue = map.get(c);
+        int size = queue.size();
+        for(int i = 0; i < size;i++){
+            String word = queue.removeFirst();
+            if(word.length() == 1){
+                count++;
+            }else{
+                map.get(word.charAt(1)).addLast(word.substring(1));
+            }
+        }
+    }
+    return count;
 }
 
 //795. Number of Subarrays with Bounded Maximum
