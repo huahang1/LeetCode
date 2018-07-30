@@ -386,45 +386,24 @@ private void backtrack(List<List<Integer>> list, List<Integer> tempList, int [] 
 } 
 
 //41. First Missing Positive
-public int firstMissingPositive(int[] A) {
-   int n=A.length;
-   if(n==0)
-       return 1;
-   int k=partition(A)+1;
-   int temp=0;
-   int first_missing_Index=k;
-   for(int i=0;i<k;i++){
-       temp=Math.abs(A[i]);
-       if(temp<=k)
-           A[temp-1]=(A[temp-1]<0)?A[temp-1]:-A[temp-1];
-   }
-   for(int i=0;i<k;i++){
-       if(A[i]>0){
-           first_missing_Index=i;
-           break;
-       }
-   }
-   return first_missing_Index+1;
+public int firstMissingPositive(int[] nums) {
+    //it should meet this requirement: nums[index] = index+1 so index = nums[index]-1
+    for(int i = 0; i < nums.length;i++){
+        while(nums[i] > 0 && nums[i]<nums.length && nums[i] != nums[nums[i]-1]){
+            swap(nums,i,nums[i]-1);
+        }
+    }
+    for(int i = 0; i < nums.length;i++){
+        if(nums[i] != i+1){
+            return i+1;
+        }
+    }
+    return nums.length+1;
 }
-
-public int partition(int[] A){
-   int n=A.length;
-   int q=-1;
-   for(int i=0;i<n;i++){
-       if(A[i]>0){
-           q++;
-           swap(A,q,i);
-       }
-   }
-   return q;
-}
-
-public void swap(int[] A, int i, int j){
-   if(i!=j){
-       A[i]^=A[j];
-       A[j]^=A[i];
-       A[i]^=A[j];
-   }
+private void swap(int[] nums, int i, int j){
+    int tmp = nums[i];
+    nums[i] = nums[j];
+    nums[j] = tmp;
 }
 
 //42. Trapping Rain Water
