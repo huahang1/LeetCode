@@ -55,13 +55,13 @@ public List<Integer> getRow(int rowIndex) {
 
 //120. Triangle
 public int minimumTotal(List<List<Integer>> triangle) {
-    int[] A = new int[triangle.size()+1];
-    for(int i=triangle.size()-1;i>=0;i--){
-        for(int j=0;j<triangle.get(i).size();j++){
-            A[j] = Math.min(A[j],A[j+1])+triangle.get(i).get(j);
+    int[] dp = new int[triangle.size()+1];
+    for(int layer=triangle.size()-1;layer>=0;i--){
+        for(int i=0;i<triangle.get(layer).size();i++){
+            dp[i] = Math.min(dp[i],dp[i+1])+triangle.get(layer).get(i);
         }
     }
-    return A[0];
+    return dp[0];
 }
 
 //121. Best Time to Buy and Sell Stock
@@ -72,7 +72,7 @@ public int maxProfit(int[] prices) {
             maxSoFar = Math.max(maxCur, maxSoFar);
         }
         return maxSoFar;
-    }
+}
     
 //122. Best Time to Buy and Sell Stock II
 public int maxProfit(int[] prices) {
@@ -315,21 +315,17 @@ public int[] twoSum(int[] numbers, int target) {
 }
 
 //169. Majority Element
-public class Solution {
-    public int majorityElement(int[] num) {
-
-        int major=num[0], count = 1;
-        for(int i=1; i<num.length;i++){
-            if(count==0){
-                count++;
-                major=num[i];
-            }else if(major==num[i]){
-                count++;
-            }else count--;
-            
-        }
-        return major;
-    }
+public int majorityElement(int[] num) {
+      int major=num[0], count = 1;
+      for(int i=1; i<num.length;i++){
+          if(count==0){
+              count++;
+              major=num[i];
+          }else if(major==num[i]){
+              count++;
+          }else count--;      
+      }
+      return major;
 }
 
 //189. Rotate Array
@@ -393,4 +389,4 @@ public boolean containsDuplicate(int[] nums) {
           }
       }
       return false;
-  }
+}
