@@ -77,6 +77,7 @@ public int findBlackPixel(char[][] picture, int N) {
         
         int result = 0;
         for (String key : map.keySet()) {
+            //guarantee each row has the same amount of B and the amount is N
             if (map.get(key) == N) {
                 for (int j = 0; j < n; j++) {
                     if (key.charAt(j) == 'B' && colCount[j] == N) {
@@ -116,7 +117,7 @@ public boolean splitArray(int[] nums) {
             sum[i] = sum[i - 1] + nums[i];
         }
         for (int j = 3; j < nums.length - 3; j++) {
-            HashSet <Integer> set = new HashSet <> ();
+            HashSet<Integer> set = new HashSet<>();
             for (int i = 1; i < j - 1; i++) {
                 if (sum[i - 1] == sum[j - 1] - sum[i])
                     set.add(sum[i - 1]);
@@ -179,9 +180,9 @@ public int arrayNesting(int[] a) {
         for (int i = 0; i < a.length; i++) {
             int size = 0;
             for (int k = i; a[k] >= 0; size++) {
-                int ak = a[k];
+                int tmp = a[k];
                 a[k] = -1; // mark a[k] as visited;
-                k = ak;
+                k = tmp;
             }
             maxsize = Integer.max(maxsize, size);
         }
