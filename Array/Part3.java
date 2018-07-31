@@ -86,13 +86,13 @@ public int maxProfit(int[] prices) {
 
 //123. Best Time to Buy and Sell Stock III
 public int maxProfit(int[] prices) {
-       int hold1 = Integer.MIN_VALUE, hold2 = Integer.MIN_VALUE;
+       int buy1 = Integer.MIN_VALUE, buy2 = Integer.MIN_VALUE;
        int sell1 = 0, sell2 = 0;
        for(int i:prices){                              // Assume we only have 0 money at first
-           sell2 = Math.max(sell2, hold2+i);     // The maximum if we've just sold 2nd stock so far.
-           hold2 = Math.max(hold2, sell1-i);  // The maximum if we've just buy  2nd stock so far.
-           sell1 = Math.max(sell1, hold1+i);     // The maximum if we've just sold 1nd stock so far.
-           hold1 = Math.max(hold1, 0-i);          // The maximum if we've just buy  1st stock so far. 
+           sell2 = Math.max(sell2, buy2+i);     // The maximum if we've just sold 2nd stock so far.
+           buy2 = Math.max(buy2, sell1-i);  // The maximum if we've just buy  2nd stock so far.
+           sell1 = Math.max(sell1, buy1+i);     // The maximum if we've just sold 1nd stock so far.
+           buy1 = Math.max(buy1, 0-i);          // The maximum if we've just buy  1st stock so far. 
        }
        return sell2; ///Since release1 is initiated as 0, so release2 will always higher than release1.
 }
@@ -186,8 +186,8 @@ public int longestConsecutive(int[] num) {
     HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
     for (int n : num) {
         if (!map.containsKey(n)) {
-            int left = (map.containsKey(n - 1)) ? map.get(n - 1) : 0;
-            int right = (map.containsKey(n + 1)) ? map.get(n + 1) : 0;
+            int left = map.getOrDefault(n-1,0);
+            int right = map.getOrDefault(n+1,0);
             int sum = left + right + 1;
             map.put(n, sum);
             
