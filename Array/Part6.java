@@ -298,48 +298,60 @@ public int smallestDistancePair(int[] nums, int k) {
 }
 
 //723. Candy Crush
-public int[][] candyCrush(int[][] board) {
-        Set<Coordinates> set = new HashSet<>();
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[i].length; j++) {
-                int cur = board[i][j];
-                if (cur == 0) continue;
-                if ((i - 2 >= 0 && board[i - 1][j] == cur && board[i - 2][j] == cur) ||                                                 // check left 2 candies
-                   (i + 2 <= board.length - 1 && board[i + 1][j] == cur && board[i + 2][j] == cur) ||                                   // check right 2 candies
-                   (j - 2 >= 0 && board[i][j - 1] == cur && board[i][j - 2] == cur) ||                                                 // check 2 candies top
-                   (j + 2 <= board[i].length - 1 && board[i][j + 1] == cur && board[i][j + 2] == cur) ||                               // check 2 candies below
-                   (i - 1 >= 0 && i + 1 <= board.length - 1 && board[i - 1][j] == cur && board[i + 1][j] == cur) ||                    // check if it is a mid candy in row
-                   (j - 1 >= 0 && j + 1 <= board[i].length - 1 && board[i][j - 1] == cur && board[i][j + 1] == cur)) {                // check if it is a mid candy in column
-                    set.add(new Coordinates(i, j));
+class CandyCrush {
+    public int[][] candyCrush(int[][] b) {
+        Set<Coordinate> set = new HashSet<>();
+        for(int i = 0; i < b.length;i++){
+            for(int j = 0; j < b[i].length;j++){
+                if(b[i][j] == 0) continue;
+                if((i-2 >= 0 && b[i-1][j] == b[i][j] &&b[i-2][j] ==b[i][j]) ||
+                   (i+2 < b.length && b[i+1][j] == b[i][j] &&b[i+2][j] ==b[i][j]) || 
+                   (j-2 >= 0 && b[i][j-1] == b[i][j] &&b[i][j] ==b[i][j-2]) || 
+                   (j+2 < b[i].length && b[i][j+1] == b[i][j] &&b[i][j] ==b[i][j+2]) ||
+                   (i-1 >= 0 && i+1 < b.length && b[i-1][j] == b[i][j] &&b[i+1][j] ==b[i][j]) || 
+                   (j-1 >= 0 && j+1 < b[i].length && b[i][j-1] == b[i][j] &&b[i][j+1] ==b[i][j]) ){
+                    set.add(new Coordinate(i,j));
                 }
             }
         }
-        if (set.isEmpty()) return board;      //stable board
-        for (Coordinates c : set) {
+        if(set.isEmpty()) return b;
+        for(Coordinate c : set){
             int x = c.i;
             int y = c.j;
-            board[x][y] = 0;      // change to "0"
+            b[x][y] = 0;
         }
-        drop(board);
-        return candyCrush(board);
+        drop(b);
+        return candyCrush(b);
     }
-    private void drop(int[][] board) {                                          // using 2-pointer to "drop"
-        for (int j = 0; j < board[0].length; j++) {
-            int bot = board.length - 1;
-            int top = board.length - 1;
-            while (top >= 0) {
-                if (board[top][j] == 0) {
+    
+    private void drop(int[][] b){
+        for(int j = 0; j < b[0].length; j++){
+            int top = b.length -1;
+            int bot = b.length -1;
+            while(top >=0 ){
+                if(b[top][j] == 0){
                     top--;
-                }
-                else {
-                    board[bot--][j] = board[top--][j];
+                }else{
+                    b[bot--][j] = b[top--][j];
                 }
             }
-            while (bot >= 0) {
-                board[bot--][j] = 0;
+            //refill the rest elements as 0
+            while(bot >=0){
+                b[bot--][j] = 0;
             }
         }
     }
+    
+}
+
+class Coordinate{
+    int i;
+    int j;
+    Coordinate(int x, int y){
+        i = x;
+        j = y;
+    }
+}
     
 //724. Find Pivot Index
 public int pivotIndex(int[] nums) {
