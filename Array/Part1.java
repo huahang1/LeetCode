@@ -59,18 +59,18 @@ public double findMedianSortedArrays(int[] nums1, int[] nums2) {
 
 //11. Container With Most Water
 public int maxArea(int[] height) {
-    int left = 0, right = height.length - 1;
-	int maxArea = 0;
-
-	while (left < right) {
-		maxArea = Math.max(maxArea, Math.min(height[left], height[right]) * (right - left));
-		if (height[left] < height[right])
-			left++;
-		else
-			right--;
-	}
-
-	return maxArea;
+    int l = 0, r = height.length-1;
+    int max = 0;
+    while(l < r){
+        if(height[l]<height[r]){
+            max = Math.max(max,height[l]*(r-l));
+            l++;
+        }else{
+            max = Math.max(max,height[r]*(r-l));
+            r--;
+        }
+    }
+    return max;
 }
 
 //15.Three sum
@@ -234,10 +234,14 @@ public int removeDuplicates(int[] nums) {
 }
 
 //27. Remove Element
-public int removeElement(int A[], int n, int elem) {
-    int begin=0;
-    for(int i=0;i<n;i++) if(A[i]!=elem) A[begin++]=A[i];
-    return begin;
+public int removeElement(int[] nums, int val) {
+    int i = 0;
+    for(int n : nums){
+        if(n != val){
+            nums[i++] = n;
+        }
+    }
+    return i;
 }
 
 //31. Next Permutation
@@ -316,6 +320,7 @@ public int[] searchRange(int[] nums, int target) {
      int start = 0, end = nums.length-1;
       while(start < end){
         int mid = (start+end)/2;
+        //return the most left answer
         if(nums[mid] < target) start=mid+1;
         else end = mid;
       }
@@ -324,6 +329,7 @@ public int[] searchRange(int[] nums, int target) {
       end=nums.length-1;
       while(start < end){
         int mid = (start+end)/2+1;
+        //return the most right answer
         if(nums[mid] > target) end = mid-1;
         else start = mid;
       }
