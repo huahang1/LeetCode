@@ -368,20 +368,18 @@ public int pivotIndex(int[] nums) {
    
 //729. My Calendar I   
 class MyCalendar {
-
-    TreeMap<Integer, Integer> calendar;
-
+    List<int[]> list;
     public MyCalendar() {
-        calendar = new TreeMap<>();
+        list = new ArrayList<>();                          
     }
-
+    
     public boolean book(int start, int end) {
-        Integer floorKey = calendar.floorKey(start);
-        if (floorKey != null && calendar.get(floorKey) > start) return false;
-        Integer ceilingKey = calendar.ceilingKey(start);
-        if (ceilingKey != null && ceilingKey < end) return false;
-
-        calendar.put(start, end);
+        for(int[] b : list){
+            if(Math.max(b[0],start) < Math.min(b[1],end)){
+                return false;
+            }
+        }
+        list.add(new int[]{start,end});
         return true;
     }
 }
