@@ -8,6 +8,7 @@ public String longestPalindrome(String s) {
         int len2 = dp(s,i,i+1);
         int len = Math.max(len1,len2);
         if(len > end-start){
+            //here put len-1 to avoid start below 0 
             start = i - (len-1)/2;
             end = i + len/2;
         }
@@ -44,6 +45,7 @@ public boolean isMatch(String s, String p) {
                 if(s.charAt(i-1) != p.charAt(j-2) && p.charAt(j-2) != '.'){
                     dp[i][j] = dp[i][j-2];
                 }else{
+                  //dp[i-1][j] is for a* count as multiple a, dp[i][j-1] for a* count as single a, dp[i][j-2] for a* count as empty
                     dp[i][j] = dp[i-1][j] || dp[i][j-1] || dp[i][j-2];
                 }
             }
@@ -62,7 +64,7 @@ public int longestValidParentheses(String s) {
         if(p[i] == ')' && open > 0){
             dp[i] = 2 + dp[i-1];
             if(i-dp[i] >= 0){
-                //here i-dp[i] is i-(dp[i-1]+2), add previous matched parenthese dp[i-(dp[i-1]+2)]
+                //here i-dp[i] is i-(dp[i-1]+2), add previous matched parenthese dp[i-(dp[i-1]+2)], here i-dp[i] is for symmetric position
                 dp[i] += dp[i-dp[i]];
             }
             max = Math.max(max,dp[i]);
