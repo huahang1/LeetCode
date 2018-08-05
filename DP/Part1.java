@@ -45,7 +45,7 @@ public boolean isMatch(String s, String p) {
                 if(s.charAt(i-1) != p.charAt(j-2) && p.charAt(j-2) != '.'){
                     dp[i][j] = dp[i][j-2];
                 }else{
-                  //dp[i-1][j] is for a* count as multiple a, dp[i][j-1] for a* count as single a, dp[i][j-2] for a* count as empty
+                  //dp[i-1][j] is for a* count as multiple a (in this case p.charAt(j-2) == '.'), dp[i][j-1] for a* count as single a, dp[i][j-2] for a* count as empty
                     dp[i][j] = dp[i-1][j] || dp[i][j-1] || dp[i][j-2];
                 }
             }
@@ -72,4 +72,32 @@ public int longestValidParentheses(String s) {
         }
     }
     return max;
+}
+
+//44. Wildcard Matching
+public boolean isMatch(String str, String pattern) {
+    int s = 0, p = 0, starIndex = -1, match = 0;
+    while(s < str.length()){
+        //current char match, moves both pointer
+        if(p < pattern.length() && (str.charAt(s) == pattern.charAt(p) || pattern.charAt(p) == '?')){
+            s++;
+            p++;
+        }else if(p < pattern.length() && pattern.charAt(p) == '*'){
+            //record star index for next not-matched element
+            starIndex = p;
+            match = s;
+            p++;
+        }else if(starIndex != -1){
+            //contains *, skip current not matched element and move to the next
+            p = starIndex+1;
+            match++;
+            s = match;
+        }else{
+            return false;
+        }
+    }
+    while(p < pattern.length() && pattern.charAt(p) == '*'){
+        p++;
+    }
+    return p == pattern.length();
 }
