@@ -101,3 +101,45 @@ public boolean isMatch(String str, String pattern) {
     }
     return p == pattern.length();
 }
+
+//72. Edit Distance
+public int minDistance(String s1, String s2) {
+    int l1 = s1.length(), l2 = s2.length();
+    int[][] dp = new int[l1+1][l2+1];
+    for(int i = 1; i <= l1;i++){
+        dp[i][0] = i;
+    }
+    for(int j = 1; j <= l2;j++){
+        dp[0][j] = j;
+    }
+    for(int i = 1; i <= l1; i++){
+        for(int j = 1; j <= l2; j++){
+            if(s1.charAt(i-1) == s2.charAt(j-1)){
+                dp[i][j] = dp[i-1][j-1];
+            }else{
+                dp[i][j] = Math.min(dp[i-1][j],Math.min(dp[i-1][j-1],dp[i][j-1]))+1;
+            }
+        }
+    }
+    return dp[l1][l2];
+}
+
+//91. Decode Ways
+public int numDecodings(String s) {
+    int n = s.length();
+    if(n == 0) return 0;
+    int[] dp = new int[n+1];
+    dp[0] = 1;
+    dp[1] = s.charAt(0) == '0' ? 0 : 1;
+    for(int i = 2; i <= n; i++){
+        int first = Integer.parseInt(s.substring(i-1,i));
+        int second = Integer.parseInt(s.substring(i-2,i));
+        if(first >= 1 && first <= 9){
+            dp[i] += dp[i-1];
+        }
+        if(second >= 10 && second <=26){
+            dp[i] += dp[i-2];
+        }
+    }
+    return dp[n];
+}
