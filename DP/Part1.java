@@ -206,3 +206,40 @@ public boolean isInterleave(String s1, String s2, String s3) {
     }
     return dp[l1][l2];
 }
+
+//115. Distinct Subsequences
+public int numDistinct(String s, String t) {
+    int m = s.length(), n = t.length();
+    int[][] dp = new int[n+1][m+1];
+    for(int j = 0; j <= m;j++){
+        dp[0][j] = 1;
+    }
+    for(int i = 1; i <= n; i++){
+        for(int j = 1; j <= m; j++){
+            if(t.charAt(i-1) == s.charAt(j-1)){
+                dp[i][j] = dp[i-1][j-1] + dp[i][j-1];
+            }else{
+                dp[i][j] = dp[i][j-1];
+            }
+        }
+    }
+    return dp[n][m];
+}
+
+//132. Palindrome Partitioning II
+public int minCut(String s) {
+    int n = s.length();
+    int[] dp = new int[n+1];
+    for(int i = 0; i <= n; i++){
+        dp[i] = i-1;
+    }
+    for(int i = 0; i <= n; i++){
+        for(int j = 0; i-j >= 0 && i+j < n && s.charAt(i-j) == s.charAt(i+j); j++){
+            dp[i+j+1] = Math.min(dp[i+j+1],1+dp[i-j]);
+        }
+        for(int j = 1; i-j+1 >=0 && i+j < n && s.charAt(i-j+1) == s.charAt(i+j); j++){
+            dp[i+j+1] = Math.min(dp[i+j+1],1+dp[i-j+1]);
+        }
+    }
+    return dp[n];
+}
