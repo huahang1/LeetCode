@@ -285,3 +285,76 @@ private List<String> DFS(String s, List<String> wordDict, HashMap<String,LinkedL
     map.put(s,res);
     return res;
 }
+
+//174. Dungeon Game
+public int calculateMinimumHP(int[][] dungeon) {
+    int m = dungeon.length;
+    int n = dungeon[0].length;
+    int[][] dp = new int[m+1][n+1];
+    for(int[] row : dp){
+        Arrays.fill(row,Integer.MAX_VALUE);
+    }
+    dp[m][n-1] = 1;
+    dp[m-1][n] = 1;
+    for(int i = m-1; i>=0; i--){
+        for(int j = n-1; j>=0; j--){
+            int need = Math.min(dp[i+1][j],dp[i][j+1]) - dungeon[i][j];
+            dp[i][j] = need > 0 ? need : 1;
+        }
+    }
+    return dp[0][0];
+}
+
+//188. Best Time to Buy and Sell Stock IV
+public int maxProfit(int k, int[] prices) {
+    int n = prices.length;
+    if(k >= n/2) return quickSolve(prices);
+    
+    int[][] dp = new int[k+1][n];
+    for(int i = 1; i <= k; i++){
+        int tmpMax = -prices[0];
+        for(int j = 1; j < n; j++){
+            dp[i][j] = Math.max(dp[i][j-1],prices[j]+tmpMax);
+            tmpMax = Math.max(tmpMax,dp[i-1][j-1]-prices[j]);
+        }
+    }
+    return dp[k][n-1];
+    
+}
+private int quickSolve(int[] prices){
+    int res = 0;
+    for(int i = 0; i < prices.length-1; i++){
+        if(prices[i+1]-prices[i]>0){
+            res += prices[i+1]-prices[i];
+        }
+    }
+    return res;
+}
+
+//198. House Robber
+public int rob(int[] nums) {
+    int left = 0, right = nums.length-1;
+    int include = 0, exclude = 0;
+    for(int j = left; j <= right; j++){
+        int i = include, e = exclude;
+        include = e + nums[j];
+        exclude = Math.max(e,i);
+    }
+    return Math.max(include,exclude);
+}
+
+//213. House Robber II
+public int rob(int[] nums) {
+    if(nums.length == 1) return nums[0];
+    return Math.max(helper(nums,0,nums.length-2),helper(nums,1,nums.length-1));
+}
+
+private int helper(int[] nums, int left, int right){
+    int include = 0, exclude = 0;
+    for(int j = left; j <= right; j++){
+        int i = include, e = exclude;
+        include = e + nums[j];
+        exclude = Math.max(i,e);
+    }
+    return Math.max(include,exclude);
+}
