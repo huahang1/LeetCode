@@ -243,3 +243,45 @@ public int minCut(String s) {
     }
     return dp[n];
 }
+
+//139. Word Break
+public boolean wordBreak(String s, List<String> wordDict) {
+    int n = s.length();
+    boolean[] dp = new boolean[n+1];
+    dp[0] = true;
+    for(int i = 0; i <= n; i++){
+        for(int j = 0; j <= i; j++){
+            if(dp[j] && wordDict.contains(s.substring(j,i))){
+                dp[i] = true;
+                break;
+            }
+        }
+    }
+    return dp[n];
+}
+
+//140. Word Break II
+public List<String> wordBreak(String s, List<String> wordDict) {
+    return DFS(s,wordDict,new HashMap<String,LinkedList<String>>());
+}
+    
+private List<String> DFS(String s, List<String> wordDict, HashMap<String,LinkedList<String>> map){
+    if(map.containsKey(s)){
+        return map.get(s);
+    }
+    LinkedList<String> res = new LinkedList<String>();
+    if(s.length() == 0){
+       res.add("");
+        return res;
+    }
+    for(String word : wordDict){
+        if(s.startsWith(word)){
+            List<String> sublist = DFS(s.substring(word.length()),wordDict,map);
+            for(String sub : sublist){
+                res.add(word+(sub.isEmpty()? "" : " ")+sub);
+            }
+        }
+    }
+    map.put(s,res);
+    return res;
+}
