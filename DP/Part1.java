@@ -358,3 +358,41 @@ private int helper(int[] nums, int left, int right){
     }
     return Math.max(include,exclude);
 }
+
+//221. Maximal Square
+public int maximalSquare(char[][] matrix) {
+    if(matrix.length == 0 || matrix == null) return 0;
+    int m = matrix.length, n = matrix[0].length;
+    int[][] dp = new int[m][n];
+    int res = 0;
+    for(int i = 0; i < m; i++){
+        dp[i][0] = matrix[i][0] -'0';
+        res = Math.max(res,dp[i][0]);
+    }
+    for(int j = 0; j < n; j++){
+        dp[0][j] = matrix[0][j] - '0';
+        res = Math.max(res,dp[0][j]);
+    }
+    for(int i = 1; i < m; i++){
+        for(int j = 1; j < n;j++){
+            if(matrix[i][j] == '1'){
+                dp[i][j] = Math.min(dp[i-1][j],Math.min(dp[i-1][j-1],dp[i][j-1])) + 1;
+            }
+            res = Math.max(res,dp[i][j]);
+        }
+    }
+    return res * res;
+}
+
+//256. Paint House
+public int minCost(int[][] costs) {
+    if(costs == null || costs.length == 0) return 0;
+    int[][] ccosts = costs.clone();
+    for(int i = 1; i < ccosts.length;i++){
+        ccosts[i][0] += Math.min(ccosts[i-1][1],ccosts[i-1][2]);
+        ccosts[i][1] += Math.min(ccosts[i-1][0],ccosts[i-1][2]);
+        ccosts[i][2] += Math.min(ccosts[i-1][0],ccosts[i-1][1]);
+    }
+    int n = costs.length-1;
+    return Math.min(ccosts[n][0],Math.min(ccosts[n][1],ccosts[n][2]));
+}
