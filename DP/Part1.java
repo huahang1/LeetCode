@@ -396,3 +396,29 @@ public int minCost(int[][] costs) {
     int n = costs.length-1;
     return Math.min(ccosts[n][0],Math.min(ccosts[n][1],ccosts[n][2]));
 }
+
+//265. Paint House II
+public int minCostII(int[][] costs) {
+    if(costs == null || costs.length == 0) return 0;
+    int[][] dp = costs.clone();
+    int n = costs.length;
+    int k = costs[0].length;
+    int min1 = -1, min2 = -1;
+    for(int i = 0; i < n; i++){
+        int last1 = min1, last2 = min2;
+        min1 = -1; min2 = -1;
+        for(int j = 0; j < k; j++){
+            if(j != last1){
+                dp[i][j] += last1 < 0 ? 0 : dp[i-1][last1];
+            }else{
+                dp[i][j] += last2 < 0 ? 0 : dp[i-1][last2];
+            }
+            if(min1 < 0 || dp[i][j]<dp[i][min1]){
+                min2 = min1; min1 = j;
+            }else if(min2 < 0 || dp[i][j]<dp[i][min2]){
+                min2 = j;
+            }
+        }
+    }
+    return dp[n-1][min1];
+}
