@@ -109,3 +109,61 @@ public int maxProfit(int[] prices) {
     }
     return sell;
 }
+
+//312. Burst Balloons
+public int maxCoins(int[] nums) {
+    int[] n_nums = new int[nums.length+2];
+    int n = 1;
+    for(int num:nums){
+        n_nums[n++] = num;
+    }
+    n_nums[0]=n_nums[n++]=1;
+    
+    int[][] dp = new int[n][n];
+    //k refers to the len, first loop list all the possible lenght of combination, left and right are the start and end point
+    for(int k = 2; k<n;k++){
+        for(int left = 0; left < n-k; left++){
+            int right = left+k;
+            for(int i = left+1; i < right; i++){
+                dp[left][right] = Math.max(dp[left][right],n_nums[left]*n_nums[i]*n_nums[right]+dp[left][i]+dp[i][right]);
+            }
+        }
+    }
+    return dp[0][n-1];
+}
+
+//321. Create Maximum Number
+class Solution {
+    public int[] maxNumber(int[] nums1, int[] nums2, int k) {
+        int[] res = new int[k];
+        int m = nums1.length, n = nums2.length;
+        for(int i = Math.max(0,k-n); i<=m&&i<=k;i++){
+            int[] candidate = merge(maxArray(nums1,i),maxArray(nums2,k-i),k);
+            if(greater(candidate,0,res,0)) res = candidate;
+        }
+        return res;
+    }
+    
+    private int[] merge(int[] nums1, int[] nums2, int k){
+        int[] res = new int[k];
+        for(int i = 0, j= 0, r = 0; r < k; r++){
+            res[r] = greater(nums1,i,nums2,j) ? nums1[i++] : nums2[j++];
+        }
+        return res;
+    }
+    
+    private boolean greater(int[] nums1, int i, int[] nums2, int j){
+        while(i < nums1.length && j < nums2.length && nums1[i] == nums2[j]){i++;j++;}
+        return j == nums2.length || (i < nums1.length && nums1[i]>nums2[j]);
+    }
+    
+    private int[] maxArray(int[] nums, int k){
+        int n = nums.length;
+        int[] res = new int[k];
+        for(int i = 0, j = 0; i < n; i++){
+            while(n-i>k-j && j>0 && res[j-1]<nums[i]) j--;
+            if(j < k){res[j++] = nums[i];}
+        }
+        return res;
+    }
+}
