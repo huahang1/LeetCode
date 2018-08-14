@@ -167,3 +167,74 @@ class Solution {
         return res;
     }
 }
+
+//322. Coin Change
+public int coinChange(int[] coins, int amount) {
+    int[] dp = new int[amount+1];
+    //fill in impossible values
+    Arrays.fill(dp,amount+1);
+    //no money is 0
+    dp[0] = 0;
+    for(int coin : coins){
+        for(int i = coin; i <= amount; i++){
+            // i-coin is for combinations
+            dp[i] = Math.min(dp[i],dp[i-coin]+1);
+        }
+    }
+    return dp[amount] == amount +1 ? -1 : dp[amount];
+}
+
+//338. Counting Bits
+public int[] countBits(int num) {
+    int[] dp = new int[num+1];
+    for(int i = 1; i <= num; i++){
+        dp[i] = dp[i>>1]+(i&1);
+    }
+    return dp;
+}
+
+//343. Integer Break
+public int integerBreak(int n) {
+    if(n==2) return 1;
+    if(n==3) return 2;
+    int res = 1;
+    //If an optimal product contains a factor f >= 4, then you can replace it with factors 2 and f-2 without losing optimality, as 2*(f-2) = 2f-4 >= f. So you never need a factor greater than or equal to 4, meaning you only need factors 1, 2 and 3 (and 1 is of course wasteful and you'd only use it for n=2 and n=3, where it's needed).
+    while(n>4){
+        res *= 3;
+        n-=3;
+    }
+    res *= n;
+    return res;
+}
+
+//351. Android Unlock Patterns
+public int numberOfPatterns(int m, int n) {
+    int[][] skip = new int[10][10];
+    skip[1][3] = skip[3][1] = 2;
+    skip[1][7] = skip[7][1] = 4;
+    skip[3][9] = skip[9][3] = 6;
+    skip[7][9] = skip[9][7] = 8;
+    skip[1][9] = skip[9][1] = skip[2][8] = skip[8][2] = skip[3][7] = skip[7][3] = skip[4][6] = skip[6][4] = 5;
+    boolean[] vis = new boolean[10];
+    int res = 0;
+    for(int i = m; i <= n; ++i) {
+        res += DFS(vis, skip, 1, i - 1)*4;    // 1, 3, 7, 9 are symmetric
+        res += DFS(vis, skip, 2, i - 1)*4;    // 2, 4, 6, 8 are symmetric
+        res += DFS(vis, skip, 5, i - 1);        // 5
+    }
+    return res;
+}
+
+ private int DFS(boolean[] visited, int[][] skip, int cur, int remain){
+    if(remain < 0) return 0;
+    if(remain == 0) return 1;
+    visited[cur] = true;
+    int res = 0;
+    for(int i = 1; i <= 9; i++){
+        if(!visited[i] && (skip[cur][i] == 0 || visited[skip[cur][i]])){
+            res += DFS(visited,skip,i,remain-1);
+        }
+    }
+    visited[cur] = false;
+    return res;
+}
