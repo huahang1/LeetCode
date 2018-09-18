@@ -279,3 +279,50 @@ public int maxEnvelopes(int[][] envelopes) {
         }
         return size;
     }
+    
+//357. Count Numbers with Unique Digits
+public int countNumbersWithUniqueDigits(int n) {
+    if(n < 1) return 1;
+    int res = 10;
+    int uniqueNumbers = 9;
+    int count = 9;
+    while(n-- > 1 && uniqueNumbers >= 0){
+        count *= uniqueNumbers;
+        res += count;
+        uniqueNumbers--;
+    }
+    return res;
+}
+
+//361. Bomb Enemy
+public int maxKilledEnemies(char[][] grid) {
+    if(grid.length == 0) return 0;
+    int m = grid.length, n = grid[0].length;
+    int[] colcache = new int[grid[0].length];
+    int rowHits = 0;
+    int res = 0;
+    for(int i = 0; i < grid.length; i++){
+        for(int j = 0; j < grid[0].length;j++){
+            if(j == 0 || grid[i][j-1] == 'W'){
+                rowHits = 0;
+                for(int k = j; k < n && grid[i][k] != 'W'; k++){
+                    if(grid[i][k] == 'E'){
+                        rowHits++;
+                    }
+                }
+            }
+            if(i == 0 || grid[i-1][j] == 'W'){
+                colcache[j] = 0;
+                for(int k = i; k < m && grid[k][j] != 'W'; k++){
+                    if(grid[k][j] == 'E'){
+                        colcache[j]++;
+                    }
+                }
+            }
+            if(grid[i][j] == '0'){
+                res = Math.max(res,rowHits+colcache[j]);
+            }
+        }
+    }
+    return res;
+}
