@@ -326,3 +326,79 @@ public int maxKilledEnemies(char[][] grid) {
     }
     return res;
 }
+
+//363. Max Sum of Rectangle No Larger Than K
+public int maxSumSubmatrix(int[][] matrix, int k) {
+    if(matrix.length == 0) return 0;
+    int m = matrix.length, n = matrix[0].length;
+    int res = Integer.MIN_VALUE;
+    for(int left = 0; left < n; left++){
+        int[] sums = new int[m];
+        for(int right = left; right < n; right++){
+            for(int i = 0; i < m; i++){
+                sums[i] += matrix[i][right];
+            }
+            TreeSet<Integer> set = new TreeSet<Integer>();
+            set.add(0);
+            int curSum = 0;
+            for(int sum : sums){
+                curSum += sum;
+                Integer num = set.ceiling(curSum-k);
+                if(num != null){
+                    res = Math.max(res, curSum-num);
+                }
+                set.add(curSum);
+            }
+        }
+    }
+    return res;
+}
+
+//368. Largest Divisible Subset
+public List<Integer> largestDivisibleSubset(int[] nums) {
+    List<Integer> res = new ArrayList<Integer>();
+    if(nums.length == 0) return res;
+    int[] count = new int[nums.length];
+    int[] pre = new int[nums.length];
+    int max = Integer.MIN_VALUE, index = -1;
+    Arrays.sort(nums);
+    for(int i = 0; i < nums.length;i++){
+        count[i] = 1;
+        pre[i] = -1;
+        for(int j = i-1; j >= 0; j--){
+            if(nums[i] % nums[j] == 0){
+                if(count[j] + 1 > count[i]){
+                count[i] = count[j] + 1;
+                pre[i] = j;
+                }
+            }
+        }
+        if(count[i] > max){
+            max = count[i];
+            index = i;
+        }
+    }
+    while(index != -1){
+        res.add(nums[index]);
+        index = pre[index];
+    }
+    return res;
+}
+
+//375. Guess Number Higher or Lower II
+public int getMoneyAmount(int n) {
+    int[][] dp = new int[n+1][n+1];
+    return helper(dp,1,n);
+}
+
+private int helper(int[][] dp, int s, int e){
+    if(s >= e) return 0;
+    if(dp[s][e] != 0) return dp[s][e];
+    int res = Integer.MAX_VALUE;
+    for(int i = s; i <= e; i++){
+        int tmp = i + Math.max(helper(dp,s,i-1),helper(dp,i+1,e));
+        res = Math.min(res,tmp);
+    }
+    dp[s][e] = res;
+    return res;
+}
