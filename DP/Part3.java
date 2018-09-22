@@ -43,3 +43,29 @@ public boolean isSubsequence(String s, String t) {
     }
     return true;
 }
+
+//403. Frog Jump
+public boolean canCross(int[] stones) {
+        if(stones.length == 0) return false;
+        HashMap<Integer,HashSet<Integer>> map = new HashMap<Integer,HashSet<Integer>>();
+        map.put(0,new HashSet<Integer>());
+        map.get(0).add(1);
+        for(int i = 1; i < stones.length -1; i++){
+            map.put(stones[i],new HashSet<Integer>());
+        }
+        for(int i = 0; i < stones.length -1; i++){
+            int stone = stones[i];
+            for(int step : map.get(stone)){
+                int reach = stone + step;
+                if(reach == stones[stones.length-1]) return true;
+                if(map.get(reach) != null){
+                    map.get(reach).add(step);
+                    map.get(reach).add(step+1);
+                    if(step-1 > 0){
+                        map.get(reach).add(step-1);
+                    }
+                }
+            }
+        }
+        return false;
+}
