@@ -69,3 +69,94 @@ public boolean canCross(int[] stones) {
         }
         return false;
 }
+
+//410. Split Array Largest Sum
+public int splitArray(int[] nums, int m) {
+    int left = 0, right = 0;
+    for(int num : nums){
+        left = Math.max(left,num);
+        right += num;
+    }
+    while(left < right){
+        int mid = left + (right-left)/2;
+        if(canCut(nums,m-1,mid)){
+            right = mid;
+        }else{
+            left = mid+1;
+        }
+    }
+    return left;
+}
+
+private boolean canCut(int[] nums, int cuts, int max){
+    int acc = 0;
+    for(int num : nums){
+        if(num > max){
+            return false;
+        }else if(num + acc <= max){
+            acc += num;
+        }else{
+            --cuts;
+            acc = num;
+            if(cuts < 0) return false;
+        }
+    }
+    return true;
+}
+
+//413. Arithmetic Slices
+public int numberOfArithmeticSlices(int[] A) {
+    int curr = 0, sum = 0;
+    for(int i = 2; i < A.length; i++){
+        if(A[i-1] - A[i-2] == A[i] - A[i-1]){
+            curr++;
+            sum += curr;
+        }else{
+            curr = 0;
+        }
+    }
+    return sum;
+}
+
+//416. Partition Equal Subset Sum
+public boolean canPartition(int[] nums) {
+    int sum = 0;
+    for(int num : nums){
+        sum += num;
+    }
+    if(sum % 2 == 1){
+        return false;
+    }
+    sum /= 2;
+    int n = nums.length;
+    boolean[][] dp = new boolean[n+1][sum+1];
+    dp[0][0] = true;
+    for(int i = 1; i < n+1; i++){
+        dp[i][0] = true;
+    }
+    for(int i = 1; i < n+1; i++){
+        for(int j = 1; j < sum+1; j++){
+            dp[i][j] = dp[i-1][j];
+            if(j >= nums[i-1]){
+                dp[i][j] = (dp[i][j] || dp[i-1][j-nums[i-1]]);
+            }
+        }
+    }
+    return dp[n][sum];
+}
+
+//418. Sentence Screen Fitting
+public int wordsTyping(String[] sentence, int rows, int cols) {
+    String words = String.join(" ",sentence) + " ";
+    int pos = 0;
+    int l = words.length();
+    for(int i = 0; i < rows;i++){
+        pos += cols;
+        if(words.charAt(pos%l) == ' '){
+            pos++;
+        }else while(pos > 0 && words.charAt((pos-1)%l) != ' '){
+            pos--;
+        }
+    }
+    return pos / l;
+}

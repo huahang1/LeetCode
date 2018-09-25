@@ -72,12 +72,131 @@ Example 2:
 Return false. There is no way to jump to the last stone as 
 the gap between the 5th and 6th stone is too large.
 ============================================================================================================================================
+410. Split Array Largest Sum
+Given an array which consists of non-negative integers and an integer m, you can split the array into m non-empty continuous subarrays. Write an algorithm to minimize the largest sum among these m subarrays.
+
+Note:
+If n is the length of array, assume the following constraints are satisfied:
+
+1 ≤ n ≤ 1000
+1 ≤ m ≤ min(50, n)
+Examples:
+
+Input:
+nums = [7,2,5,10,8]
+m = 2
+
+Output:
+18
+
+Explanation:
+There are four ways to split nums into two subarrays.
+The best way is to split it into [7,2,5] and [10,8],
+where the largest sum among the two subarrays is only 18.
 
 ============================================================================================================================================
+413. Arithmetic Slices
+
+A sequence of number is called arithmetic if it consists of at least three elements and if the difference between any two consecutive elements is the same.
+
+For example, these are arithmetic sequence:
+
+1, 3, 5, 7, 9
+7, 7, 7, 7
+3, -1, -5, -9
+The following sequence is not arithmetic.
+
+1, 1, 2, 5, 7
+
+A zero-indexed array A consisting of N numbers is given. A slice of that array is any pair of integers (P, Q) such that 0 <= P < Q < N.
+
+A slice (P, Q) of array A is called arithmetic if the sequence:
+A[P], A[p + 1], ..., A[Q - 1], A[Q] is arithmetic. In particular, this means that P + 1 < Q.
+
+The function should return the number of arithmetic slices in the array A.
+
+
+Example:
+
+A = [1, 2, 3, 4]
+
+return: 3, for 3 arithmetic slices in A: [1, 2, 3], [2, 3, 4] and [1, 2, 3, 4] itself.
 
 ============================================================================================================================================
+416. Partition Equal Subset Sum
+Given a non-empty array containing only positive integers, find if the array can be partitioned into two subsets such that the sum of elements in both subsets is equal.
 
+Note:
+Each of the array element will not exceed 100.
+The array size will not exceed 200.
+Example 1:
+
+Input: [1, 5, 11, 5]
+
+Output: true
+
+Explanation: The array can be partitioned as [1, 5, 5] and [11].
+Example 2:
+
+Input: [1, 2, 3, 5]
+
+Output: false
+
+Explanation: The array cannot be partitioned into equal sum subsets.
 ============================================================================================================================================
+418. Sentence Screen Fitting
+Given a rows x cols screen and a sentence represented by a list of non-empty words, find how many times the given sentence can be fitted on the screen.
+
+Note:
+
+A word cannot be split into two lines.
+The order of words in the sentence must remain unchanged.
+Two consecutive words in a line must be separated by a single space.
+Total words in the sentence won't exceed 100.
+Length of each word is greater than 0 and won't exceed 10.
+1 ≤ rows, cols ≤ 20,000.
+Example 1:
+
+Input:
+rows = 2, cols = 8, sentence = ["hello", "world"]
+
+Output: 
+1
+
+Explanation:
+hello---
+world---
+
+The character '-' signifies an empty space on the screen.
+Example 2:
+
+Input:
+rows = 3, cols = 6, sentence = ["a", "bcd", "e"]
+
+Output: 
+2
+
+Explanation:
+a-bcd- 
+e-a---
+bcd-e-
+
+The character '-' signifies an empty space on the screen.
+Example 3:
+
+Input:
+rows = 4, cols = 5, sentence = ["I", "had", "apple", "pie"]
+
+Output: 
+1
+
+Explanation:
+I-had
+apple
+pie-I
+had--
+
+The character '-' signifies an empty space on the screen.
 
 ============================================================================================================================================
 
