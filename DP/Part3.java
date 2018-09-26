@@ -160,3 +160,47 @@ public int wordsTyping(String[] sentence, int rows, int cols) {
     }
     return pos / l;
 }
+
+//446. Arithmetic Slices II - Subsequence
+public int numberOfArithmeticSlices(int[] A) {
+    Map<Integer,Integer>[] map = new Map[A.length];
+    int res = 0;
+    for(int i = 0; i < A.length; i++){
+        map[i] = new HashMap<Integer,Integer>();
+        for(int j = 0; j < i; j++){
+            long diff = (long) A[i] - A[j];
+            if(diff <= Integer.MIN_VALUE || diff >= Integer.MAX_VALUE) continue;
+            int d = (int) diff;
+            int c1 = map[i].getOrDefault(d,0);
+            int c2 = map[j].getOrDefault(d,0);
+            res += c2;
+            map[i].put(d,c1+c2+1);
+        }
+    }
+    return res;
+}
+
+//464. Can I Win
+public boolean canIWin(int maxChoosableInteger, int desiredTotal) {
+    if(desiredTotal <= 0) return true;
+    if((1+maxChoosableInteger)*maxChoosableInteger/2 < desiredTotal) return false;
+    return helper(desiredTotal, new int[maxChoosableInteger], new HashMap<>());
+}
+
+private boolean helper(int total, int[] state, HashMap<String,Boolean> map){
+    String key = Arrays.toString(state);
+    if(map.containsKey(key)) return map.get(key);
+    for(int i = 0; i < state.length; i++){
+        if(state[i] == 0){
+            state[i] = 1;
+            if(total <= i+1 || !helper(total-(i+1),state,map)){
+                map.put(key,true);
+                state[i] = 0;
+                return true;
+            }
+            state[i] = 0;
+        }
+    }
+    map.put(key,false);
+    return false;
+}
