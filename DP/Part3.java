@@ -204,3 +204,106 @@ private boolean helper(int total, int[] state, HashMap<String,Boolean> map){
     map.put(key,false);
     return false;
 }
+
+//466. Count The Repetitions
+public int getMaxRepetitions(String s1, int n1, String s2, int n2) {
+        char[] array1 = s1.toCharArray(), array2 = s2.toCharArray();
+        int count1 = 0, i = 0, count2 = 0, j = 0;
+        while(count1 < n1){
+            if(array1[i] == array2[j]){
+                j++;
+                if(j == array2.length){
+                    j = 0;
+                    count2++;
+                }
+            }
+            i++;
+            if(i == array1.length){
+                i = 0;
+                count1++;
+            }
+        }
+        return count2 / n2;
+}
+
+//467. Unique Substrings in Wraparound String
+public int findSubstringInWraproundString(String p) {
+    int[] count = new int[26];
+    int maxLength = 0, res = 0;
+    for(int i = 0; i < p.length(); i++){
+        if(i > 0 && (p.charAt(i)-p.charAt(i-1) == 1 || p.charAt(i-1) - p.charAt(i) == 25)){
+            maxLength++;
+        }else{
+            maxLength = 1;
+        }
+        int index = p.charAt(i) - 'a';
+        count[index] = Math.max(count[index],maxLength);
+    }
+    for(int i = 0; i < 26; i++){
+        res += count[i];
+    }
+    return res;
+}
+
+//471. Encode String with Shortest Length
+public String encode(String s) {
+    String[][] dp = new String[s.length()][s.length()];
+    for(int l = 0; l < s.length(); l++){
+        for(int i = 0; i < s.length()-l;i++){
+            int j = i+l;
+            String substr = s.substring(i,j+1);
+            if(j-i < 4){
+                dp[i][j] = substr;
+            }else{
+                dp[i][j] = substr;
+                for(int k = i; k < j; k++){
+                    if((dp[i][k]+dp[k+1][j]).length() < dp[i][j].length()){
+                        dp[i][j] = dp[i][k]+dp[k+1][j];
+                    }
+                }
+                
+                for(int k = 0; k < substr.length(); k++){
+                    String ss = substr.substring(0,k+1);
+                    if(ss != null && substr.length() % ss.length() == 0 && substr.replaceAll(ss,"").length() == 0){
+                        ss = substr.length() / ss.length() + "[" + dp[i][i+k] + "]";
+                        dp[i][j] = ss.length() < dp[i][j].length() ? ss : dp[i][j];
+                    }
+                }
+            }
+        }
+    }
+    return dp[0][s.length()-1];
+}
+
+//472. Concatenated Words
+public List<String> findAllConcatenatedWordsInADict(String[] words) {
+    List<String> res = new ArrayList<String>();
+    Set<String> dict = new HashSet<String>();
+    Arrays.sort(words, new Comparator<String>(){
+        public int compare(String s1, String s2){
+            return s1.length() - s2.length();
+        }
+    });
+    for(int i = 0; i < words.length; i++){
+        if(helper(words[i],dict)){
+            res.add(words[i]);
+        }
+        dict.add(words[i]);
+    }
+    return res;
+}
+
+private boolean helper(String word,Set<String> dict){
+    if(dict.isEmpty()) return false;
+    boolean[] dp = new boolean[word.length()+1];
+    dp[0] = true;
+    for(int i = 1; i <= word.length(); i++){
+        for(int j = 0; j < i; j++){
+            if(dp[j] && dict.contains(word.substring(j,i))){
+                dp[i] = true;
+                break;
+            }
+        }
+    }
+    return dp[word.length()];
+}
