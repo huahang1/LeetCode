@@ -307,3 +307,89 @@ private boolean helper(String word,Set<String> dict){
     }
     return dp[word.length()];
 }
+
+//474. Ones and Zeroes
+public int findMaxForm(String[] strs, int m, int n) {
+    int[][][] dp = new int[strs.length+1][m+1][n+1];
+    for(int l = 0; l <= strs.length; l++){
+        int zeroes = 0, ones = 0;
+        if(l > 0){
+            String s = strs[l-1];
+            for(int i = 0; i < s.length(); i++){
+                if(s.charAt(i) == '0'){
+                    zeroes++;
+                }else{
+                    ones++;
+                }
+            }
+        }
+        for(int i = 0; i <= m; i++){
+            for(int j = 0; j <= n; j++){
+                if(l == 0){
+                    dp[l][i][j] = 0;
+                }else{
+                    if(i >= zeroes && j >= ones){
+                        dp[l][i][j] = Math.max(dp[l-1][i][j], dp[l-1][i-zeroes][j-ones]+1);
+                    }else{
+                        dp[l][i][j] = dp[l-1][i][j];
+                    }
+                }
+            }
+        }
+    }
+    return dp[strs.length][m][n];
+}
+
+//486. Predict the Winner
+public boolean PredictTheWinner(int[] nums) {
+    int n = nums.length;
+    int[][] dp = new int[n][n];
+    for(int i = 0; i < n; i++){
+        dp[i][i] = nums[i];
+    }
+    for(int len = 1; len < n; len++){
+        for(int i = 0; i < n - len; i++){
+            int j = i + len;
+            dp[i][j] = Math.max(nums[i]-dp[i+1][j],nums[j]-dp[i][j-1]);
+        }
+    }
+    return dp[0][n-1] >= 0;
+}
+
+//494. Target Sum
+public int findTargetSumWays(int[] nums, int S) {
+        int sum = 0;
+        for(int n : nums){sum += n;}
+        return sum < S || (sum+S)%2>0 ? 0 : helper(nums,(sum+S)/2);
+    }
+    
+private int helper(int[] nums, int s){
+        int[] dp = new int[s+1];
+        dp[0] = 1;
+        for(int n : nums){
+            for(int i = s; i >= n; i--){
+                dp[i] += dp[i-n];
+            }
+        }
+        return dp[s];
+}
+
+//514. Freedom Trail
+public int findRotateSteps(String ring, String key) {
+    int n = ring.length();
+    int m = key.length();
+    int[][] dp = new int[m+1][n];
+    for(int i = m-1; i >= 0; i--){
+        for(int j = 0; j < n; j++){
+            dp[i][j] = Integer.MAX_VALUE;
+            for(int k = 0; k < n; k++){
+                if(ring.charAt(k) == key.charAt(i)){
+                    int diff = Math.abs(j-k);
+                    int step = Math.min(diff,n-diff);
+                    dp[i][j] = Math.min(dp[i][j],step+dp[i+1][k]);
+                }
+            }
+        }
+    }
+    return dp[0][0]+m;
+}
