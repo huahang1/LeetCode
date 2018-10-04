@@ -409,3 +409,41 @@ public int longestPalindromeSubseq(String s) {
         }
         return dp[0][s.length()-1];
 }
+
+//517. Super Washing Machines
+public int findMinMoves(int[] machines) {
+    int sum = 0;
+    for(int m : machines){
+        sum += m;
+    }
+    if(sum%machines.length != 0) return -1;
+    int avg = sum / machines.length;
+    int res = 0, cnt = 0;
+    for(int m : machines){
+        cnt += m - avg;
+        res = Math.max(Math.max(res,Math.abs(cnt)),m-avg);
+    }
+    return res;
+}
+
+//546. Remove Boxes
+public int removeBoxes(int[] boxes) {
+    int n = boxes.length;
+    int[][][] dp = new int[n][n][n];
+    return helper(boxes,0,n-1,0,dp);
+}
+
+private int helper(int[] boxes, int i, int j, int k, int[][][] dp){
+    if(i > j) return 0;
+    if(dp[i][j][k] > 0) return dp[i][j][k];
+    int res = 0;
+    for(;i+1<=j && boxes[i]==boxes[i+1];i++,k++);
+    res = (k+1)*(k+1) + helper(boxes,i+1,j,0,dp);
+    for(int m = i+1; m <= j; m++){
+        if(boxes[i] == boxes[m]){
+            res = Math.max(res,helper(boxes,i+1,m-1,0,dp)+helper(boxes,m,j,k+1,dp));
+        }
+    }
+    dp[i][j][k] = res;
+    return res;
+}
