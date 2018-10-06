@@ -28,17 +28,127 @@ Example 2:
 Input:m = 1, n = 3, N = 3, i = 0, j = 1
 Output: 12
 ============================================================================================================================================
+600. Non-negative Integers without Consecutive Ones
+Given a positive integer n, find the number of non-negative integers less than or equal to n, whose binary representations do NOT contain consecutive ones.
 
+Example 1:
+Input: 5
+Output: 5
+Explanation: 
+Here are the non-negative integers <= 5 with their corresponding binary representations:
+0 : 0
+1 : 1
+2 : 10
+3 : 11
+4 : 100
+5 : 101
+Among them, only integer 3 disobeys the rule (two consecutive ones) and the other 5 satisfy the rule. 
+Note: 1 <= n <= 109
 ============================================================================================================================================
+629. K Inverse Pairs Array
+Given two integers n and k, find how many different arrays consist of numbers from 1 to n such that there are exactly k inverse pairs.
 
+We define an inverse pair as following: For ith and jth element in the array, if i < j and a[i] > a[j] then it's an inverse pair; Otherwise, it's not.
+
+Since the answer may be very large, the answer should be modulo 109 + 7.
+
+Example 1:
+Input: n = 3, k = 0
+Output: 1
+Explanation: 
+Only the array [1,2,3] which consists of numbers from 1 to 3 has exactly 0 inverse pair.
+Example 2:
+Input: n = 3, k = 1
+Output: 2
+Explanation: 
+The array [1,3,2] and [2,1,3] have exactly 1 inverse pair.
+Note:
+1.The integer n is in the range [1, 1000] and k is in the range [0, 1000].
 ============================================================================================================================================
+638. Shopping Offers
+In LeetCode Store, there are some kinds of items to sell. Each item has a price.
 
+However, there are some special offers, and a special offer consists of one or more different kinds of items with a sale price.
+
+You are given the each item's price, a set of special offers, and the number we need to buy for each item. The job is to output the lowest price you have to pay for exactly certain items as given, where you could make optimal use of the special offers.
+
+Each special offer is represented in the form of an array, the last number represents the price you need to pay for this special offer, other numbers represents how many specific items you could get if you buy this offer.
+
+You could use any of special offers as many times as you want.
+
+Example 1:
+Input: [2,5], [[3,0,5],[1,2,10]], [3,2]
+Output: 14
+Explanation: 
+There are two kinds of items, A and B. Their prices are $2 and $5 respectively. 
+In special offer 1, you can pay $5 for 3A and 0B
+In special offer 2, you can pay $10 for 1A and 2B. 
+You need to buy 3A and 2B, so you may pay $10 for 1A and 2B (special offer #2), and $4 for 2A.
+Example 2:
+Input: [2,3,4], [[1,1,0,4],[2,2,1,9]], [1,2,1]
+Output: 11
+Explanation: 
+The price of A is $2, and $3 for B, $4 for C. 
+You may pay $4 for 1A and 1B, and $9 for 2A ,2B and 1C. 
+You need to buy 1A ,2B and 1C, so you may pay $4 for 1A and 1B (special offer #1), and $3 for 1B, $4 for 1C. 
+You cannot add more items, though only $9 for 2A ,2B and 1C.
+
+Note:
+1.There are at most 6 kinds of items, 100 special offers.
+2.For each item, you need to buy at most 6 of them.
+3.You are not allowed to buy more items than you want, even if that would lower the overall price.
 ============================================================================================================================================
+639. Decode Ways II
+A message containing letters from A-Z is being encoded to numbers using the following mapping way:
 
+'A' -> 1
+'B' -> 2
+...
+'Z' -> 26
+Beyond that, now the encoded string can also contain the character '*', which can be treated as one of the numbers from 1 to 9.
+
+Given the encoded message containing digits and the character '*', return the total number of ways to decode it.
+
+Also, since the answer may be very large, you should return the output mod 109 + 7.
+
+Example 1:
+Input: "*"
+Output: 9
+Explanation: The encoded message can be decoded to the string: "A", "B", "C", "D", "E", "F", "G", "H", "I".
+Example 2:
+Input: "1*"
+Output: 9 + 9 = 18
+Note:
+1.The length of the input string will fit in range [1, 105].
+2.The input string will only contain the character '*' and digits '0' - '9'.
 ============================================================================================================================================
+646. Maximum Length of Pair Chain
+You are given n pairs of numbers. In every pair, the first number is always smaller than the second number.
 
+Now, we define a pair (c, d) can follow another pair (a, b) if and only if b < c. Chain of pairs can be formed in this fashion.
+
+Given a set of pairs, find the length longest chain which can be formed. You needn't use up all the given pairs. You can select pairs in any order.
+
+Example 1:
+Input: [[1,2], [2,3], [3,4]]
+Output: 2
+Explanation: The longest chain is [1,2] -> [3,4]
+Note:
+1.The number of given pairs will be in the range [1, 1000].
 ============================================================================================================================================
+647. Palindromic Substrings
+Given a string, your task is to count how many palindromic substrings in this string.
 
+The substrings with different start indexes or end indexes are counted as different substrings even they consist of same characters.
+
+Example 1:
+Input: "abc"
+Output: 3
+Explanation: Three palindromic strings: "a", "b", "c".
+Example 2:
+Input: "aaa"
+Output: 6
+Explanation: Six palindromic strings: "a", "a", "a", "aa", "aa", "aaa".
 ============================================================================================================================================
 
 ============================================================================================================================================
