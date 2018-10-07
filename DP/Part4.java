@@ -203,3 +203,100 @@ class Solution {
         return count;
     }
 }
+
+//650. 2 Keys Keyboard
+public int minSteps(int n) {
+        int[] dp = new int[n+1];
+        for(int i = 2; i <= n; i++){
+            dp[i] = i;
+            for(int j = i-1; j >= 1; j--){
+                if(i%j == 0){
+                    dp[i] = dp[j] + (i/j);
+                    break;
+                }
+            }
+        }
+        return dp[n];
+}
+
+//664. Strange Printer
+public int strangePrinter(String s) {
+        if(s.length() == 0 || s == null){
+            return 0;
+        }
+        int n = s.length();
+        int[][] dp = new int[n][n];
+        for(int i = 0; i < n; i++){
+            dp[i][i] = 1;
+            if(i+1 < n){
+                dp[i][i+1] = s.charAt(i) == s.charAt(i+1) ? 1 : 2;
+            } 
+        }
+        for(int len = 2; len < n; len++){
+            for(int start = 0; start+len < n; start++){
+                dp[start][start+len] = len+1;
+                for(int k = 0; k < len; k++){
+                    int tmp = dp[start][start+k] + dp[start+k+1][start+len];
+                    dp[start][start+len] = Math.min(dp[start][start+len],s.charAt(start+k) == s.charAt(start+len) ? tmp-1 : tmp);
+                }
+            }
+        }
+        return dp[0][n-1];
+}
+
+//673. Number of Longest Increasing Subsequence
+public int findNumberOfLIS(int[] nums) {
+       int n = nums.length, res = 0, max_len = 0;
+       int[] len = new int[n];
+       int[] count = new int[n];
+       for(int i = 0; i < n; i++){
+           len[i] = count[i] = 1;
+           for(int j = 0; j < i; j++){
+               if(nums[i] > nums[j]){
+                   if(len[i] == len[j]+1){
+                       count[i] += count[j];
+                   }
+                   if(len[i] < len[j]+1){
+                       len[i] = len[j]+1;
+                       count[i] = count[j];
+                   }
+               }
+           }
+           if(max_len == len[i]){
+               res += count[i];
+           }
+           if(max_len < len[i]){
+               max_len = len[i];
+               res = count[i];
+           }
+       }
+       return res;
+}
+
+//688. Knight Probability in Chessboard
+public double knightProbability(int N, int K, int r, int c) {
+       int[][] moves = {{1,2},{1,-2},{-1,2},{-1,-2},{2,1},{2,-1},{-2,-1},{-2,1}};
+       double[][] dp0 = new double[N][N];
+       for(double[] row: dp0){
+           Arrays.fill(row,1);
+       }
+       for(int l = 0; l < K;l++){
+           double[][] dp1 = new double[N][N];
+           for(int i = 0; i < N; i++){
+               for(int j = 0; j < N; j++){
+                   for(int[] move : moves){
+                       int row = i + move[0];
+                       int col = j + move[1];
+                       if(valid(row,col,N)){
+                           dp1[i][j] += dp0[row][col];
+                       }
+                   }
+               }
+           }
+           dp0 = dp1;
+       }
+       return dp0[r][c] / Math.pow(8,K);
+   }
+private boolean valid(int r, int c, int len){
+       return r >=0 && r < len && c>=0 && c <len;
+}

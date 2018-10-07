@@ -150,12 +150,72 @@ Input: "aaa"
 Output: 6
 Explanation: Six palindromic strings: "a", "a", "a", "aa", "aa", "aaa".
 ============================================================================================================================================
+650. 2 Keys Keyboard
+Initially on a notepad only one character 'A' is present. You can perform two operations on this notepad for each step:
 
-============================================================================================================================================
+Copy All: You can copy all the characters present on the notepad (partial copy is not allowed).
+Paste: You can paste the characters which are copied last time.
+Given a number n. You have to get exactly n 'A' on the notepad by performing the minimum number of steps permitted. Output the minimum number of steps to get n 'A'.
 
+Example 1:
+Input: 3
+Output: 3
+Explanation:
+Intitally, we have one character 'A'.
+In step 1, we use Copy All operation.
+In step 2, we use Paste operation to get 'AA'.
+In step 3, we use Paste operation to get 'AAA'.
+Note:
+The n will be in the range [1, 1000].
 ============================================================================================================================================
+664. Strange Printer
+There is a strange printer with the following two special requirements:
 
+The printer can only print a sequence of the same character each time.
+At each turn, the printer can print new characters starting from and ending at any places, and will cover the original existing characters.
+Given a string consists of lower English letters only, your job is to count the minimum number of turns the printer needed in order to print it.
+
+Example 1:
+Input: "aaabbb"
+Output: 2
+Explanation: Print "aaa" first and then print "bbb".
+Example 2:
+Input: "aba"
+Output: 2
+Explanation: Print "aaa" first and then print "b" from the second place of the string, which will cover the existing character 'a'.
+Hint: Length of the given string will not exceed 100.
 ============================================================================================================================================
+673. Number of Longest Increasing Subsequence
+Given an unsorted array of integers, find the number of longest increasing subsequence.
+
+Example 1:
+Input: [1,3,5,4,7]
+Output: 2
+Explanation: The two longest increasing subsequence are [1, 3, 4, 7] and [1, 3, 5, 7].
+Example 2:
+Input: [2,2,2,2,2]
+Output: 5
+Explanation: The length of longest continuous increasing subsequence is 1, and there are 5 subsequences' length is 1, so output 5.
+Note: Length of the given array will be not exceed 2000 and the answer is guaranteed to be fit in 32-bit signed int.
+============================================================================================================================================
+688. Knight Probability in Chessboard
+On an NxN chessboard, a knight starts at the r-th row and c-th column and attempts to make exactly K moves. The rows and columns are 0 indexed, so the top-left square is (0, 0), and the bottom-right square is (N-1, N-1).
+
+A chess knight has 8 possible moves it can make, as illustrated below. Each move is two squares in a cardinal direction, then one square in an orthogonal direction.
+Each time the knight is to move, it chooses one of eight possible moves uniformly at random (even if the piece would go off the chessboard) and moves there.
+
+The knight continues moving until it has made exactly K moves or has moved off the chessboard. Return the probability that the knight remains on the board after it has stopped moving.
+
+Example:
+Input: 3, 2, 0, 0
+Output: 0.0625
+Explanation: There are two moves (to (1,2), (2,1)) that will keep the knight on the board.
+From each of those positions, there are also two moves that will keep the knight on the board.
+The total probability the knight stays on the board is 0.0625.
+Note:
+N will be between 1 and 25.
+K will be between 0 and 100.
+The knight always initially starts on the board.
 
 ============================================================================================================================================
 
