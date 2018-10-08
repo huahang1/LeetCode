@@ -218,15 +218,131 @@ K will be between 0 and 100.
 The knight always initially starts on the board.
 
 ============================================================================================================================================
+691. Stickers to Spell Word
+We are given N different types of stickers. Each sticker has a lowercase English word on it.
 
+You would like to spell out the given target string by cutting individual letters from your collection of stickers and rearranging them.
+
+You can use each sticker more than once if you want, and you have infinite quantities of each sticker.
+
+What is the minimum number of stickers that you need to spell out the target? If the task is impossible, return -1.
+
+Example 1:
+
+Input:
+
+["with", "example", "science"], "thehat"
+Output:
+
+3
+Explanation:
+
+We can use 2 "with" stickers, and 1 "example" sticker.
+After cutting and rearrange the letters of those stickers, we can form the target "thehat".
+Also, this is the minimum number of stickers necessary to form the target string.
+Example 2:
+
+Input:
+
+["notice", "possible"], "basicbasic"
+Output:
+
+-1
+Explanation:
+
+We can't form the target "basicbasic" from cutting letters from the given stickers.
+Note:
+
+stickers has length in the range [1, 50].
+stickers consists of lowercase English words (without apostrophes).
+target has length in the range [1, 15], and consists of lowercase English letters.
+In all test cases, all words were chosen randomly from the 1000 most common US English words, and the target was chosen as a concatenation of two random words.
+The time limit may be more challenging than usual. It is expected that a 50 sticker test case can be solved within 35ms on average.
 ============================================================================================================================================
+698. Partition to K Equal Sum Subsets
+Given an array of integers nums and a positive integer k, find whether it's possible to divide this array into k non-empty subsets whose sums are all equal.
 
+Example 1:
+Input: nums = [4, 3, 2, 3, 5, 2, 1], k = 4
+Output: True
+Explanation: It's possible to divide it into 4 subsets (5), (1, 4), (2,3), (2,3) with equal sums.
+Note:
+
+1 <= k <= len(nums) <= 16.
+0 < nums[i] < 10000.
 ============================================================================================================================================
+712. Minimum ASCII Delete Sum for Two Strings
+Given two strings s1, s2, find the lowest ASCII sum of deleted characters to make two strings equal.
 
+Example 1:
+Input: s1 = "sea", s2 = "eat"
+Output: 231
+Explanation: Deleting "s" from "sea" adds the ASCII value of "s" (115) to the sum.
+Deleting "t" from "eat" adds 116 to the sum.
+At the end, both strings are equal, and 115 + 116 = 231 is the minimum sum possible to achieve this.
+Example 2:
+Input: s1 = "delete", s2 = "leet"
+Output: 403
+Explanation: Deleting "dee" from "delete" to turn the string into "let",
+adds 100[d]+101[e]+101[e] to the sum.  Deleting "e" from "leet" adds 101[e] to the sum.
+At the end, both strings are equal to "let", and the answer is 100+101+101+101 = 403.
+If instead we turned both strings into "lee" or "eet", we would get answers of 433 or 417, which are higher.
+Note:
+
+0 < s1.length, s2.length <= 1000.
+All elements of each string will have an ASCII value in [97, 122].
 ============================================================================================================================================
+730. Count Different Palindromic Subsequences
+Given a string S, find the number of different non-empty palindromic subsequences in S, and return that number modulo 10^9 + 7.
 
+A subsequence of a string S is obtained by deleting 0 or more characters from S.
+
+A sequence is palindromic if it is equal to the sequence reversed.
+
+Two sequences A_1, A_2, ... and B_1, B_2, ... are different if there is some i for which A_i != B_i.
+
+Example 1:
+Input: 
+S = 'bccb'
+Output: 6
+Explanation: 
+The 6 different non-empty palindromic subsequences are 'b', 'c', 'bb', 'cc', 'bcb', 'bccb'.
+Note that 'bcb' is counted only once, even though it occurs twice.
+Example 2:
+Input: 
+S = 'abcdabcdabcdabcdabcdabcdabcdabcddcbadcbadcbadcbadcbadcbadcbadcba'
+Output: 104860361
+Explanation: 
+There are 3104860382 different non-empty palindromic subsequences, which is 104860361 modulo 10^9 + 7.
+Note:
+
+The length of S will be in the range [1, 1000].
+Each character S[i] will be in the set {'a', 'b', 'c', 'd'}.
 ============================================================================================================================================
+740. Delete and Earn
+Given an array nums of integers, you can perform operations on the array.
 
+In each operation, you pick any nums[i] and delete it to earn nums[i] points. After, you must delete every element equal to nums[i] - 1 or nums[i] + 1.
+
+You start with 0 points. Return the maximum number of points you can earn by applying such operations.
+
+Example 1:
+Input: nums = [3, 4, 2]
+Output: 6
+Explanation: 
+Delete 4 to earn 4 points, consequently 3 is also deleted.
+Then, delete 2 to earn 2 points. 6 total points are earned.
+Example 2:
+Input: nums = [2, 2, 3, 3, 3, 4]
+Output: 9
+Explanation: 
+Delete 3 to earn 3 points, deleting both 2's and the 4.
+Then, delete 3 again to earn 3 points, and 3 again to earn 3 points.
+9 total points are earned.
+Note:
+
+The length of nums is at most 20000.
+Each element nums[i] is an integer in the range [1, 10000].
 ============================================================================================================================================
 
 ============================================================================================================================================

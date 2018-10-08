@@ -300,3 +300,148 @@ public double knightProbability(int N, int K, int r, int c) {
 private boolean valid(int r, int c, int len){
        return r >=0 && r < len && c>=0 && c <len;
 }
+
+//691. Stickers to Spell Word
+public int minStickers(String[] stickers, String target) {
+        int m = stickers.length;
+        int[][] mp = new int[m][26];
+        for(int i = 0; i < m; i++){
+            for(char c :stickers[i].toCharArray()){
+                mp[i][c-'a']++;
+            }
+        }
+        Map<String,Integer> dp = new HashMap<String,Integer>();
+        dp.put("",0);
+        return helper(mp,dp,target);
+    }
+    
+    private int helper(int[][] mp, Map<String,Integer> dp, String target){
+        if(dp.containsKey(target)) return dp.get(target);
+        int m = mp.length;
+        int res = Integer.MAX_VALUE;
+        int[] tar = new int[26];
+        for(int i = 0; i < target.length();i++){
+            tar[target.charAt(i)-'a']++;
+        }
+        for(int i = 0; i < m; i++){
+            if(mp[i][target.charAt(0)-'a'] == 0){
+                continue;
+            }
+            StringBuilder sb = new StringBuilder();
+            for(int j = 0; j < 26; j++){
+                if(tar[j]>0){
+                    for(int k = 0; k < Math.max(0,tar[j]-mp[i][j]);k++){
+                        sb.append((char)('a'+j));
+                    }
+                }
+            }
+            String s = sb.toString();
+            int tmp = helper(mp,dp,s);
+            if(tmp != -1){
+                res = Math.min(res,tmp+1);
+            }
+        }
+        if(res == Integer.MAX_VALUE){
+            dp.put(target,-1);
+        }else{
+            dp.put(target,res);
+        }
+        return dp.get(target);
+}
+
+//698. Partition to K Equal Sum Subsets
+public boolean canPartitionKSubsets(int[] nums, int k) {
+        int sum = 0;
+        for(int num:nums) sum += num;
+        if(k < 0 || sum % k != 0) return false;
+        int[] visited = new int[nums.length];
+        return helper(nums,visited,0,k,0,sum/k);
+    }
+    
+    private boolean helper(int[] nums,int[] visited,int start_index,int k, int curr_sum,int target){
+        if(k == 1) return true;
+        if(curr_sum == target){
+            return helper(nums,visited,0,k-1,0,target);
+        }
+        for(int i = start_index; i < nums.length; i++){
+            if(visited[i] == 0){
+                visited[i] =1;
+                if(helper(nums,visited,i+1,k,curr_sum+nums[i],target)){
+                    return true;
+                }
+                visited[i] = 0;
+            }
+        }
+        return false;
+}
+
+//712. Minimum ASCII Delete Sum for Two Strings
+public int minimumDeleteSum(String s1, String s2) {
+       int m = s1.length(), n = s2.length();
+       int[][] dp = new int[m+1][n+1];
+       for(int j = 1; j <= n; j++){
+           dp[0][j] = dp[0][j-1] + (int) s2.charAt(j-1);
+       }
+       for(int i = 1; i <= m; i++){
+           dp[i][0] = dp[i-1][0] + (int) s1.charAt(i-1);
+           for(int j = 1; j <= n; j++){
+               if(s1.charAt(i-1) == s2.charAt(j-1)){
+                   dp[i][j] = dp[i-1][j-1];
+               }else{
+                   dp[i][j] = Math.min(dp[i-1][j] + (int) s1.charAt(i-1),dp[i][j-1] + (int) s2.charAt(j-1));
+               }
+           }
+       }
+       return dp[m][n];
+}
+
+//730. Count Different Palindromic Subsequences
+public int countPalindromicSubsequences(String s) {
+        int n = s.length();
+        int[][] dp = new int[n][n];
+        for(int i = 0; i < n; i++){
+            dp[i][i] = 1;
+        }
+        for(int distance = 1; distance < n; distance++){
+            for(int i = 0; i+distance<n;i++){
+                int j = i+distance;
+                if(s.charAt(i) == s.charAt(j)){
+                    int low = i+1;
+                    int high = j-1;
+                    while(low <= high && s.charAt(low) != s.charAt(j)){
+                        low++;
+                    }
+                    while(low <=high && s.charAt(high) != s.charAt(j)){
+                        high--;
+                    }
+                    if(low > high){
+                        dp[i][j] = dp[i+1][j-1]*2 +2;
+                    }else if(low == high){
+                        dp[i][j] = dp[i+1][j-1]*2+1;
+                    }else{
+                        dp[i][j] = dp[i+1][j-1]*2-dp[low+1][high-1];
+                    }
+                }else{
+                    dp[i][j] = dp[i+1][j] + dp[i][j-1] - dp[i+1][j-1];
+                }
+                dp[i][j] = dp[i][j] < 0 ? dp[i][j] + 1000000007 : dp[i][j] % 1000000007;
+            }
+        }
+        return dp[0][n-1];
+}
+
+//740. Delete and Earn
+public int deleteAndEarn(int[] nums) {
+        int[] values = new int[10001];
+        for(int num : nums){
+            values[num] += num;
+        }
+        int take = 0, skip = 0;
+        for(int i = 0; i < 10001; i++){
+            int takei = values[i] + skip;
+            int skipi = Math.max(skip,take);
+            take = takei;
+            skip = skipi;
+        }
+        return Math.max(take,skip);
+}
