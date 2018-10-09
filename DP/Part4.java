@@ -445,3 +445,77 @@ public int deleteAndEarn(int[] nums) {
         }
         return Math.max(take,skip);
 }
+
+//741. Cherry Pickup
+public int cherryPickup(int[][] grid) {
+        int N = grid.length, M = (N<<1)-1;
+        int[][] dp = new int[N][N];
+        dp[0][0] = grid[0][0];
+        for(int n = 1; n < M; n++){
+            for(int i = N -1; i >=0; i--){
+                for(int p = N-1; p >=0; p--){
+                    int j = n-i, q = n-p;
+                    if(j < 0 || j >= N || q < 0 || q >= N || grid[i][j] < 0 || grid[p][q] < 0){
+                        dp[i][p] = -1;
+                        continue;
+                    }
+                    if(i > 0) dp[i][p] = Math.max(dp[i-1][p],dp[i][p]);
+                    if(p > 0) dp[i][p] = Math.max(dp[i][p-1],dp[i][p]);
+                    if(i > 0 && p > 0) dp[i][p] = Math.max(dp[i-1][p-1],dp[i][p]);
+                    if(dp[i][p] >= 0) dp[i][p] += grid[i][j] + (i != p ? grid[p][q] : 0);
+                }
+            }
+        }
+        return Math.max(dp[N-1][N-1],0);
+}
+
+//764. Largest Plus Sign
+public int orderOfLargestPlusSign(int N, int[][] mines) {
+        int[][] dp = new int[N][N];
+        for(int i = 0; i < dp.length;i++){
+            Arrays.fill(dp[i],N);
+        }
+        for(int[] m : mines){
+            dp[m[0]][m[1]] = 0;
+        }
+        for(int i = 0; i < N; i++){
+            for(int j = 0, k = N-1, l = 0, r= 0, u = 0, d = 0; j < N; j++,k--){
+                dp[i][j] = Math.min(dp[i][j], l = (dp[i][j] == 0 ? 0 : l+1));
+                dp[i][k] = Math.min(dp[i][k], r = (dp[i][k] == 0 ? 0 : r+1));
+                dp[j][i] = Math.min(dp[j][i], u = (dp[j][i] == 0 ? 0 : u+1));
+                dp[k][i] = Math.min(dp[k][i], d = (dp[k][i] == 0 ? 0 : d+1));
+            }
+        }
+        int res = 0; 
+        for(int i = 0; i < N; i++){
+            for(int j = 0; j < N; j++){
+                res = Math.max(res,dp[i][j]);
+            }
+        }
+        return res;
+}
+
+//787. Cheapest Flights Within K Stops
+public int findCheapestPrice(int n, int[][] flights, int src, int dst, int K) {
+        Map<Integer,Map<Integer,Integer>> map = new HashMap<>();
+        for(int[] f:flights){
+            if(!map.containsKey(f[0])) map.put(f[0],new HashMap<>());
+            map.get(f[0]).put(f[1],f[2]);
+        }
+        Queue<int[]> pq = new PriorityQueue<>((a,b)->(Integer.compare(a[0],b[0])));
+        pq.add(new int[] {0,src,K+1});
+        while(!pq.isEmpty()){
+            int[] top = pq.remove();
+            int price = top[0];
+            int city = top[1];
+            int stop = top[2];
+            if(city == dst) return price;
+            if(stop > 0){
+                Map<Integer,Integer> next = map.getOrDefault(city,new HashMap<>());
+                for(int nextcity: next.keySet()){
+                    pq.add(new int[] {price+next.get(nextcity),nextcity,stop-1});
+                }
+            }
+        }
+        return -1;
+}

@@ -344,9 +344,114 @@ Note:
 The length of nums is at most 20000.
 Each element nums[i] is an integer in the range [1, 10000].
 ============================================================================================================================================
+741. Cherry Pickup
+In a N x N grid representing a field of cherries, each cell is one of three possible integers.
 
+0 means the cell is empty, so you can pass through;
+1 means the cell contains a cherry, that you can pick up and pass through;
+-1 means the cell contains a thorn that blocks your way.
+Your task is to collect maximum number of cherries possible by following the rules below:
+
+Starting at the position (0, 0) and reaching (N-1, N-1) by moving right or down through valid path cells (cells with value 0 or 1);
+After reaching (N-1, N-1), returning to (0, 0) by moving left or up through valid path cells;
+When passing through a path cell containing a cherry, you pick it up and the cell becomes an empty cell (0);
+If there is no valid path between (0, 0) and (N-1, N-1), then no cherries can be collected.
+Example 1:
+Input: grid =
+[[0, 1, -1],
+ [1, 0, -1],
+ [1, 1,  1]]
+Output: 5
+Explanation: 
+The player started at (0, 0) and went down, down, right right to reach (2, 2).
+4 cherries were picked up during this single trip, and the matrix becomes [[0,1,-1],[0,0,-1],[0,0,0]].
+Then, the player went left, up, up, left to return home, picking up one more cherry.
+The total number of cherries picked up is 5, and this is the maximum possible.
+Note:
+
+grid is an N by N 2D array, with 1 <= N <= 50.
+Each grid[i][j] is an integer in the set {-1, 0, 1}.
+It is guaranteed that grid[0][0] and grid[N-1][N-1] are not -1.
 ============================================================================================================================================
+764. Largest Plus Sign
+In a 2D grid from (0, 0) to (N-1, N-1), every cell contains a 1, except those cells in the given list mines which are 0. What is the largest axis-aligned plus sign of 1s contained in the grid? Return the order of the plus sign. If there is none, return 0.
 
+An "axis-aligned plus sign of 1s of order k" has some center grid[x][y] = 1 along with 4 arms of length k-1 going up, down, left, and right, and made of 1s. This is demonstrated in the diagrams below. Note that there could be 0s or 1s beyond the arms of the plus sign, only the relevant area of the plus sign is checked for 1s.
+
+Examples of Axis-Aligned Plus Signs of Order k:
+
+Order 1:
+000
+010
+000
+
+Order 2:
+00000
+00100
+01110
+00100
+00000
+
+Order 3:
+0000000
+0001000
+0001000
+0111110
+0001000
+0001000
+0000000
+Example 1:
+
+Input: N = 5, mines = [[4, 2]]
+Output: 2
+Explanation:
+11111
+11111
+11111
+11111
+11011
+In the above grid, the largest plus sign can only be order 2.  One of them is marked in bold.
+Example 2:
+
+Input: N = 2, mines = []
+Output: 1
+Explanation:
+There is no plus sign of order 2, but there is of order 1.
+Example 3:
+
+Input: N = 1, mines = [[0, 0]]
+Output: 0
+Explanation:
+There is no plus sign, so return 0.
+Note:
+
+N will be an integer in the range [1, 500].
+mines will have length at most 5000.
+mines[i] will be length 2 and consist of integers in the range [0, N-1].
+(Additionally, programs submitted in C, C++, or C# will be judged with a slightly smaller time limit.)
 ============================================================================================================================================
+787. Cheapest Flights Within K Stops
+There are n cities connected by m flights. Each fight starts from city u and arrives at v with a price w.
 
+Now given all the cities and fights, together with starting city src and the destination dst, your task is to find the cheapest price from src to dst with up to k stops. If there is no such route, output -1.
+
+Example 1:
+Input: 
+n = 3, edges = [[0,1,100],[1,2,100],[0,2,500]]
+src = 0, dst = 2, k = 1
+Output: 200
+
+Example 2:
+Input: 
+n = 3, edges = [[0,1,100],[1,2,100],[0,2,500]]
+src = 0, dst = 2, k = 0
+Output: 500
+
+Note:
+The number of nodes n will be in range [1, 100], with nodes labeled from 0 to n - 1.
+The size of flights will be in range [0, n * (n - 1) / 2].
+The format of each flight will be (src, dst, price).
+The price of each flight will be in the range [1, 10000].
+k is in the range of [0, n - 1].
+There will not be any duplicated flights or self cycles.
 ============================================================================================================================================
