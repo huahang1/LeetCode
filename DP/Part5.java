@@ -70,3 +70,80 @@ private double search(int n, int k, int[] A, double[][] dp){
         }
         return dp[n][k];
 }
+
+//818. Race Car
+public int racecar(int target) {
+       int[] dp = new int[target+1];
+       Arrays.fill(dp,1,dp.length,-1);
+       return helper(target,dp);
+}
+   
+private int helper(int i, int[] dp){
+       if(dp[i] >= 0) return dp[i];
+       dp[i] = Integer.MAX_VALUE;
+       int m = 1, j = 1;
+       for(; j < i; j = (1 << ++m)-1){
+           for(int p = 0, q= 0; p < j; p = (1 << ++q)-1){
+               dp[i] = Math.min(dp[i],m+1+q+1+helper(i-(j-p),dp));
+           }
+       }
+       dp[i] = Math.min(dp[i], m + (i==j ? 0 :1+helper(j-i,dp)));
+       return dp[i];
+}
+
+//837. New 21 Game
+public double new21Game(int N, int K, int W) {
+    if(K == 0 || N >= K+W) return 1;
+    double[] dp = new double[N+1];
+    double Wsum = 1, res = 0;
+    dp[0] = 1;
+    for(int i = 1; i <= N; i++){
+        dp[i] = Wsum / W;
+        if(i < K){
+            Wsum += dp[i];
+        }else{
+            res += dp[i];
+        }
+        if(i-W >= 0){
+            Wsum -= dp[i-W];
+        }
+    }
+    return res;
+}
+
+//838. Push Dominoes
+public String pushDominoes(String d) {
+        d = 'L'+ d + 'R';
+        StringBuilder res = new StringBuilder();
+        for(int i = 0, j = 1; j < d.length(); j++){
+            if(d.charAt(j) == '.') continue;
+            int middle = j-i-1;
+            if(i>0) res.append(d.charAt(i));
+            if(d.charAt(i) == d.charAt(j)){
+                for(int k = 0; k < middle;k++) res.append(d.charAt(i));
+            }else if(d.charAt(i) == 'L' && d.charAt(j) == 'R'){
+                for(int k = 0; k < middle;k++) res.append('.');
+            }else{
+                for(int k = 0; k < middle/2;k++) res.append(d.charAt(i));
+                if(middle%2 == 1) res.append('.');
+                for(int k = 0; k < middle/2;k++) res.append(d.charAt(j));
+            }
+            i = j;
+        }
+        return res.toString();
+}
+
+//871. Minimum Number of Refueling Stops
+public int minRefuelStops(int target, int startFuel, int[][] stations) {
+        long[] dp = new long[stations.length+1];
+        dp[0] = startFuel;
+        for(int i = 0; i < stations.length;i++){
+            for(int j = i; j >=0 && dp[j] >= stations[i][0]; j--){
+                dp[j+1] = Math.max(dp[j+1],dp[j]+stations[i][1]);
+            }
+        }
+        for(int i = 0; i < dp.length; i++){
+            if(dp[i] >= target) return i;
+        }
+        return -1;
+}
