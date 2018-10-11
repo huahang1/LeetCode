@@ -247,17 +247,183 @@ Note:
 (The time limit has been reduced by 50% for submissions in Java, C, and C++.)
 
 ============================================================================================================================================
+877. Stone Game
+Alex and Lee play a game with piles of stones.  There are an even number of piles arranged in a row, and each pile has a positive integer number of stones piles[i].
 
+The objective of the game is to end with the most stones.  The total number of stones is odd, so there are no ties.
+
+Alex and Lee take turns, with Alex starting first.  Each turn, a player takes the entire pile of stones from either the beginning or the end of the row.  This continues until there are no more piles left, at which point the person with the most stones wins.
+
+Assuming Alex and Lee play optimally, return True if and only if Alex wins the game.
+
+Example 1:
+Input: [5,3,4,5]
+Output: true
+Explanation: 
+Alex starts first, and can only take the first 5 or the last 5.
+Say he takes the first 5, so that the row becomes [3, 4, 5].
+If Lee takes 3, then the board is [4, 5], and Alex takes 5 to win with 10 points.
+If Lee takes the last 5, then the board is [3, 4], and Alex takes 4 to win with 9 points.
+This demonstrated that taking the first 5 was a winning move for Alex, so we return true.
+ 
+Note:
+2 <= piles.length <= 500
+piles.length is even.
+1 <= piles[i] <= 500
+sum(piles) is odd.
 ============================================================================================================================================
+879. Profitable Schemes
+There are G people in a gang, and a list of various crimes they could commit.
 
+The i-th crime generates a profit[i] and requires group[i] gang members to participate.
+
+If a gang member participates in one crime, that member can't participate in another crime.
+
+Let's call a profitable scheme any subset of these crimes that generates at least P profit, and the total number of gang members participating in that subset of crimes is at most G.
+
+How many schemes can be chosen?  Since the answer may be very large, return it modulo 10^9 + 7.
+
+Example 1:
+
+Input: G = 5, P = 3, group = [2,2], profit = [2,3]
+Output: 2
+Explanation: 
+To make a profit of at least 3, the gang could either commit crimes 0 and 1, or just crime 1.
+In total, there are 2 schemes.
+Example 2:
+
+Input: G = 10, P = 5, group = [2,3,5], profit = [6,7,8]
+Output: 7
+Explanation: 
+To make a profit of at least 5, the gang could commit any crimes, as long as they commit one.
+There are 7 possible schemes: (0), (1), (2), (0,1), (0,2), (1,2), and (0,1,2).
+ 
+Note:
+1 <= G <= 100
+0 <= P <= 100
+1 <= group[i] <= 100
+0 <= profit[i] <= 100
+1 <= group.length = profit.length <= 100
 ============================================================================================================================================
+887. Super Egg Drop
+You are given K eggs, and you have access to a building with N floors from 1 to N. 
 
+Each egg is identical in function, and if an egg breaks, you cannot drop it again.
+
+You know that there exists a floor F with 0 <= F <= N such that any egg dropped at a floor higher than F will break, and any egg dropped at or below floor F will not break.
+
+Each move, you may take an egg (if you have an unbroken one) and drop it from any floor X (with 1 <= X <= N). 
+
+Your goal is to know with certainty what the value of F is.
+
+What is the minimum number of moves that you need to know with certainty what F is, regardless of the initial value of F?
+
+Example 1:
+
+Input: K = 1, N = 2
+Output: 2
+Explanation: 
+Drop the egg from floor 1.  If it breaks, we know with certainty that F = 0.
+Otherwise, drop the egg from floor 2.  If it breaks, we know with certainty that F = 1.
+If it didn't break, then we know with certainty F = 2.
+Hence, we needed 2 moves in the worst case to know what F is with certainty.
+Example 2:
+
+Input: K = 2, N = 6
+Output: 3
+Example 3:
+
+Input: K = 3, N = 14
+Output: 4
 ============================================================================================================================================
+898. Bitwise ORs of Subarrays
+We have an array A of non-negative integers.
 
+For every (contiguous) subarray B = [A[i], A[i+1], ..., A[j]] (with i <= j), we take the bitwise OR of all the elements in B, obtaining a result A[i] | A[i+1] | ... | A[j].
+
+Return the number of possible results.  (Results that occur more than once are only counted once in the final answer.)
+
+Example 1:
+
+Input: [0]
+Output: 1
+Explanation: 
+There is only one possible result: 0.
+Example 2:
+
+Input: [1,1,2]
+Output: 3
+Explanation: 
+The possible subarrays are [1], [1], [2], [1, 1], [1, 2], [1, 1, 2].
+These yield the results 1, 1, 2, 1, 3, 3.
+There are 3 unique values, so the answer is 3.
+Example 3:
+
+Input: [1,2,4]
+Output: 6
+Explanation: 
+The possible results are 1, 2, 3, 4, 6, and 7.
+ 
+Note:
+1 <= A.length <= 50000
+0 <= A[i] <= 10^9
 ============================================================================================================================================
+902. Numbers At Most N Given Digit Set
+We have a sorted set of digits D, a non-empty subset of {'1','2','3','4','5','6','7','8','9'}.  (Note that '0' is not included.)
 
+Now, we write numbers using these digits, using each digit as many times as we want.  For example, if D = {'1','3','5'}, we may write numbers such as '13', '551', '1351315'.
+
+Return the number of positive integers that can be written (using the digits of D) that are less than or equal to N.
+
+ 
+
+Example 1:
+
+Input: D = ["1","3","5","7"], N = 100
+Output: 20
+Explanation: 
+The 20 numbers that can be written are:
+1, 3, 5, 7, 11, 13, 15, 17, 31, 33, 35, 37, 51, 53, 55, 57, 71, 73, 75, 77.
+Example 2:
+
+Input: D = ["1","4","9"], N = 1000000000
+Output: 29523
+Explanation: 
+We can write 3 one digit numbers, 9 two digit numbers, 27 three digit numbers,
+81 four digit numbers, 243 five digit numbers, 729 six digit numbers,
+2187 seven digit numbers, 6561 eight digit numbers, and 19683 nine digit numbers.
+In total, this is 29523 integers that can be written using the digits of D.
+ 
+
+Note:
+
+D is a subset of digits '1'-'9' in sorted order.
+1 <= N <= 10^9
 ============================================================================================================================================
+903. Valid Permutations for DI Sequence
+We are given S, a length n string of characters from the set {'D', 'I'}. (These letters stand for "decreasing" and "increasing".)
 
+A valid permutation is a permutation P[0], P[1], ..., P[n] of integers {0, 1, ..., n}, such that for all i:
+
+If S[i] == 'D', then P[i] > P[i+1], and;
+If S[i] == 'I', then P[i] < P[i+1].
+How many valid permutations are there?  Since the answer may be large, return your answer modulo 10^9 + 7.
+
+Example 1:
+
+Input: "DID"
+Output: 5
+Explanation: 
+The 5 valid permutations of (0, 1, 2, 3) are:
+(1, 0, 3, 2)
+(2, 0, 3, 1)
+(2, 1, 3, 0)
+(3, 0, 2, 1)
+(3, 1, 2, 0)
+ 
+Note:
+1 <= S.length <= 200
+S consists only of characters from the set {'D', 'I'}.
 ============================================================================================================================================
 
 ============================================================================================================================================

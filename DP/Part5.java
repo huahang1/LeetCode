@@ -168,3 +168,106 @@ public int lenLongestFibSubseq(int[] A) {
         }
         return res > 2 ? res : 0;
 }
+
+//877. Stone Game
+public boolean stoneGame(int[] p) {
+        int n = p.length;
+        int[][] dp = new int[n][n];
+        for(int i = 0; i < n; i++){
+            dp[i][i] = p[i];
+        }
+        for(int d = 1; d < n; d++){
+            for(int i = 0; i+d < n; i++){
+                dp[i][i+d] = Math.max(p[i] - dp[i+1][i+d], p[i+d]-dp[i][i+d-1]);
+            }
+        }
+        return dp[0][n-1]>0;
+}
+
+//879. Profitable Schemes
+public int profitableSchemes(int G, int P, int[] group, int[] profit) {
+        int[][] dp = new int[P+1][G+1];
+        dp[0][0] = 1;
+        int mod = (int)1e9+7;
+        int res = 0;
+        for(int k = 0; k < group.length; k++){
+            int g = group[k], p = profit[k];
+            for(int i = P; i >= 0; i--){
+                for(int j = G-g; j >=0; j--){
+                    dp[Math.min(i+p,P)][j+g] = (dp[Math.min(i+p,P)][j+g]+dp[i][j]) % mod;
+                }
+            }
+        }
+        for(int x : dp[P]){
+            res = (res+x)%mod;
+        }
+        return res;
+}
+
+//887. Super Egg Drop
+public int superEggDrop(int K, int N) {
+        int[][] dp = new int[N+1][K+1];
+        int m = 0;
+        while(dp[m][K]<N){
+            m++;
+            for(int k = 1; k <= K; k++){
+                dp[m][k] = dp[m-1][k-1]+dp[m-1][k]+1;
+            }
+        }
+        return m;
+}
+
+//898. Bitwise ORs of Subarrays
+public int subarrayBitwiseORs(int[] A) {
+       Set<Integer> res = new HashSet<>(), cur = new HashSet<>(), cur2;
+       for(Integer i : A){
+           cur2 = new HashSet<>();
+           cur2.add(i);
+           for(Integer j : cur) cur2.add(i|j);
+           cur = cur2;
+           res.addAll(cur);
+       }
+       return res.size();
+}
+
+//902. Numbers At Most N Given Digit Set
+public int atMostNGivenDigitSet(String[] D, int N) {
+        String target = Integer.toString(N);
+        int ln = target.length();
+        int ld = D.length;
+        int res = 0;
+        for(int i = 1; i < ln; i++){
+            res += Math.pow(ld,i);
+        }
+        for(int i = 0; i < ln; i++){
+            boolean hasSame = false;
+            for(int j = 0; j < ld; j++){
+                if(D[j].charAt(0) < target.charAt(i)){
+                    res += Math.pow(ld,ln-1-i);
+                }else if(D[j].charAt(0) == target.charAt(i)){
+                    hasSame = true;
+                }
+            }
+            if(!hasSame) return res;
+        }
+        return res+1;
+}
+
+//903. Valid Permutations for DI Sequence
+public int numPermsDISequence(String S) {
+        int n = S.length(), mod = (int)1e9+7;
+        int[][] dp = new int[n+1][n+1];
+        for(int i = 0; i <= n; i++) dp[0][i] = 1;
+        for(int i = 0; i < n; i++){
+            if(S.charAt(i) == 'I'){
+                for(int j = 0,cur = 0; j < n-i; j++){
+                    dp[i+1][j] = cur = (cur+dp[i][j])%mod;
+                }
+            }else{
+                for(int j = n-1-i,cur = 0; j >=0; j--){
+                    dp[i+1][j] = cur = (cur+dp[i][j+1])%mod;
+                }
+            }
+        }
+        return dp[n][0];
+}
