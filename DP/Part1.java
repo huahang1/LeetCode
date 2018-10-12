@@ -26,45 +26,43 @@ private int dp(String s, int l, int r){
 
 //10. Regular Expression Matching
 public boolean isMatch(String s, String p) {
-    if(s == null || p == null) return false;
-    boolean[][] dp = new boolean[s.length()+1][p.length()+1];
-    dp[0][0] = true;
-    for(int j = 1; j < dp[0].length;j++){
-        if(p.charAt(j-1) == '*'){
-            if(dp[0][j-1] || j > 0 && dp[0][j-2]){
-                dp[0][j] = true;
-            }
-        }
-    }
-    for(int i = 1; i < dp.length;i++){
-        for(int j = 1; j < dp[0].length;j++){
-            if(s.charAt(i-1) == p.charAt(j-1) || p.charAt(j-1) == '.'){
-                dp[i][j] = dp[i-1][j-1];
-            }
+        if(s == null || p == null) return false;
+        boolean[][] dp = new boolean[s.length()+1][p.length()+1];
+        dp[0][0] = true;
+        for(int j = 1; j <= p.length(); j++){
             if(p.charAt(j-1) == '*'){
-                if(s.charAt(i-1) != p.charAt(j-2) && p.charAt(j-2) != '.'){
-                    dp[i][j] = dp[i][j-2];
-                }else{
-                  //dp[i-1][j] is for a* count as multiple a (in this case p.charAt(j-2) == '.'), dp[i][j-1] for a* count as single a, dp[i][j-2] for a* count as empty
-                    dp[i][j] = dp[i-1][j] || dp[i][j-1] || dp[i][j-2];
+                if(dp[0][j-1] || (j > 1 && dp[0][j-2])){
+                    dp[0][j] = true;
                 }
             }
         }
-    }
-    return dp[s.length()][p.length()];
+        for(int i = 1; i <= s.length(); i++){
+            for(int j = 1; j <= p.length(); j++){
+                if(s.charAt(i-1) == p.charAt(j-1) || p.charAt(j-1) == '.'){
+                    dp[i][j] = dp[i-1][j-1];
+                }
+                if(p.charAt(j-1) == '*'){
+                    if(s.charAt(i-1) != p.charAt(j-2) && p.charAt(j-2) != '.'){
+                        dp[i][j] = dp[i][j-2];
+                    }else{
+                        dp[i][j] = dp[i-1][j] || dp[i][j-1] || dp[i][j-2];
+                    }
+                }
+            }
+        }
+        return dp[s.length()][p.length()];
 }
 
 //32. Longest Valid Parentheses
 public int longestValidParentheses(String s) {
-    int max = 0, open = 0;
-    char[] p = s.toCharArray();
     int[] dp = new int[s.length()];
-    for(int i = 0; i < p.length;i++){
-        if(p[i] == '(') open++;
-        if(p[i] == ')' && open > 0){
+    int max = 0, open = 0;
+    for(int i = 0; i < s.length();i++){
+        if(s.charAt(i) == '(') open++;
+        if(s.charAt(i) == ')' && open > 0){
             dp[i] = 2 + dp[i-1];
-            if(i-dp[i] >= 0){
-                //here i-dp[i] is i-(dp[i-1]+2), add previous matched parenthese dp[i-(dp[i-1]+2)], here i-dp[i] is for symmetric position
+            //check the symmetric postiton for parenthese count
+            if(i - dp[i] >= 0){
                 dp[i] += dp[i-dp[i]];
             }
             max = Math.max(max,dp[i]);
@@ -100,6 +98,83 @@ public boolean isMatch(String str, String pattern) {
         p++;
     }
     return p == pattern.length();
+}
+
+//53. Maximum Subarray
+public int maxSubArray(int[] nums) {
+        int[] dp = new int[nums.length];
+        dp[0] = nums[0];
+        int res = dp[0];
+        for(int i = 1; i < nums.length;i++){
+            dp[i] = nums[i] + (dp[i-1] > 0 ? dp[i-1] : 0);
+            res = Math.max(res,dp[i]);
+        }
+        return res;
+}
+
+//62. Unique Paths
+public int uniquePaths(int m, int n) {
+        int[][] dp = new int[m][n];
+        for(int i = 0; i < m; i++){
+            Arrays.fill(dp[i],1);
+        }
+        for(int i = 1; i < m; i++){
+            for(int j = 1; j < n; j++){
+                dp[i][j] = dp[i-1][j] + dp[i][j-1];
+            }
+        }
+        return dp[m-1][n-1];
+}
+
+//63. Unique Paths II
+public int uniquePathsWithObstacles(int[][] o) {
+        int n = o[0].length;
+        int[] dp = new int[n];
+        dp[0] = 1;
+        for(int[] row : o){
+            for(int j = 0; j < n; j++){
+                if(row[j] == 1){
+                    dp[j] = 0;
+                }else if(j > 0){
+                    dp[j] += dp[j-1];
+                }
+            }
+        }
+        return dp[n-1];
+}
+
+//64. Minimum Path Sum
+public int minPathSum(int[][] grid) {
+        int m = grid.length, n = grid[0].length;
+        int[][] dp = new int[m][n];
+        for(int i = 0; i < m; i++){
+            Arrays.fill(dp[i],grid[0][0]);
+        }
+        for(int i = 1; i < m; i++){
+            dp[i][0] = dp[i-1][0] + grid[i][0];
+        }
+        for(int j = 1; j < n; j++){
+            dp[0][j] = dp[0][j-1] + grid[0][j];
+        }
+        for(int i = 1; i < m; i++){
+            for(int j = 1; j < n; j++){
+                dp[i][j] = Math.min(dp[i-1][j],dp[i][j-1])+grid[i][j];
+            }
+        }
+        return dp[m-1][n-1];
+}
+
+//70. Climbing Stairs
+public int climbStairs(int n) {
+        int[] dp = new int[n+1];
+        if(n == 1) return 1;
+        if(n == 2) return 2;
+        dp[1] = 1;
+        dp[2] = 2;
+        for(int i = 3; i <= n; i++){
+            dp[i] = dp[i-1] + dp[i-2];
+        }
+        return dp[n];
 }
 
 //72. Edit Distance
