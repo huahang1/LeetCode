@@ -366,6 +366,41 @@ public int numDistinct(String s, String t) {
     return dp[n][m];
 }
 
+//120. Triangle
+public int minimumTotal(List<List<Integer>> triangle) {
+        int layer = triangle.size();
+        int[] dp = new int[layer+1];
+        for(int i = layer-1; i >= 0; i--){
+            for(int j = 0; j < triangle.get(i).size(); j++){
+                dp[j] = Math.min(dp[j],dp[j+1])+triangle.get(i).get(j);
+            }
+        }
+        return dp[0];
+}
+
+//121. Best Time to Buy and Sell Stock
+public int maxProfit(int[] prices) {
+        int res = 0, maxSoFar = 0;
+        for(int i = 1; i < prices.length; i++){
+            maxSoFar = Math.max(0, maxSoFar += prices[i]-prices[i-1]);
+            res = Math.max(res,maxSoFar);
+        }
+        return res;
+}
+
+//123. Best Time to Buy and Sell Stock III
+public int maxProfit(int[] prices) {
+        int buy1 = Integer.MIN_VALUE, buy2 = Integer.MIN_VALUE;
+        int sell1 = 0, sell2 = 0;
+        for(int i : prices){
+            sell2 = Math.max(sell2,buy2+i);
+            buy2 = Math.max(buy2,sell1-i);
+            sell1 = Math.max(sell1,buy1+i);
+            buy1 = Math.max(buy1,0-i);
+        }
+        return sell2;
+}
+
 //132. Palindrome Partitioning II
 public int minCut(String s) {
     int n = s.length();
