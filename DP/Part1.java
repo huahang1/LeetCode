@@ -461,6 +461,23 @@ private List<String> DFS(String s, List<String> wordDict, HashMap<String,LinkedL
     return res;
 }
 
+//152. Maximum Product Subarray
+public int maxProduct(int[] nums) {
+        if(nums == null || nums.length == 0) return 0;
+        int res = nums[0], max = nums[0], min = nums[0];
+        for(int i = 1; i < nums.length; i++){
+            if(nums[i] < 0){
+                int tmp = max;
+                max = min;
+                min = tmp;
+            }
+            max = Math.max(nums[i],max*nums[i]);
+            min = Math.min(nums[i],min*nums[i]);
+            res = Math.max(res,max);
+        }
+        return res;
+}
+
 //174. Dungeon Game
 public int calculateMinimumHP(int[][] dungeon) {
     int m = dungeon.length;
