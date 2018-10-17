@@ -525,14 +525,15 @@ private int quickSolve(int[] prices){
 
 //198. House Robber
 public int rob(int[] nums) {
-    int left = 0, right = nums.length-1;
-    int include = 0, exclude = 0;
-    for(int j = left; j <= right; j++){
-        int i = include, e = exclude;
-        include = e + nums[j];
-        exclude = Math.max(e,i);
-    }
-    return Math.max(include,exclude);
+       if(nums == null || nums.length == 0) return 0;
+       if(nums.length < 2) return nums[0];
+       int[] dp = new int[nums.length];
+       dp[0] = nums[0];
+       dp[1] = Math.max(nums[0],nums[1]);
+       for(int i = 2; i < nums.length; i++){
+           dp[i] = Math.max(dp[i-1],dp[i-2]+nums[i]);
+       }
+       return dp[nums.length-1];
 }
 
 //213. House Robber II
@@ -587,6 +588,21 @@ public int minCost(int[][] costs) {
     }
     int n = costs.length-1;
     return Math.min(ccosts[n][0],Math.min(ccosts[n][1],ccosts[n][2]));
+}
+
+//264. Ugly Number II
+public int nthUglyNumber(int n) {
+       if(n < 0) return 0;
+       int[] dp = new int[n];
+       dp[0] = 1;
+       int p2 = 0, p3 = 0, p5 = 0;
+       for(int i = 1; i < n; i++){
+           dp[i] = Math.min(dp[p2]*2,Math.min(dp[p3]*3,dp[p5]*5));
+           if(dp[i] == dp[p2]*2) p2++;
+           if(dp[i] == dp[p3]*3) p3++;
+           if(dp[i] == dp[p5]*5) p5++;
+       } 
+       return dp[n-1];
 }
 
 //265. Paint House II
