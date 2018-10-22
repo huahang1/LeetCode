@@ -93,6 +93,7 @@ class NumMatrix {
     }
     
     public int sumRegion(int row1, int col1, int row2, int col2) {
+        //the reason why doesn't puls 1 for row1 and col1 is we need value included row1, col1; if we add plus 1, the ans will be the pure gap/difference
         return sums[row2+1][col2+1] - sums[row1][col2+1] - sums[row2+1][col1]+ sums[row1][col1];
     }
 }
