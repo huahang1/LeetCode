@@ -242,44 +242,44 @@ public int numberOfPatterns(int m, int n) {
 
 //354. Russian Doll Envelopes
 public int maxEnvelopes(int[][] envelopes) {
-        if(envelopes.length == 0) return 0;
-        Arrays.sort(envelopes,new Comparator<int[]>(){
-            public int compare(int[] arr1, int[] arr2){
-                if(arr1[0] == arr2[0]){
-                    return arr2[1] - arr1[1];
-                }else{
-                    return arr1[0] - arr2[0];
-                }
-            }
-        });
-        int[] tmp = new int[envelopes.length];
-        int i = 0;
-        for(int[] envelope : envelopes){
-            tmp[i++] = envelope[1];
-        }
-        int count = LIS(tmp);
-        return count;
-    }
+      if(envelopes.length == 0) return 0;
+      Arrays.sort(envelopes,new Comparator<int[]>(){
+          public int compare(int[] arr1, int[] arr2){
+              if(arr1[0] == arr2[0]){
+                  return arr2[1] - arr1[1];
+              }else{
+                  return arr1[0] - arr2[0];
+              }
+          }
+      });
+      int[] tmp = new int[envelopes.length];
+      int i = 0;
+      for(int[] envelope : envelopes){
+          tmp[i++] = envelope[1];
+      }
+      int count = LIS(tmp);
+      return count;
+}
     
-    private int LIS(int[] nums){
-        if(nums.length <= 1 ) return nums.length;
-        int[] tails = new int[nums.length];
-        int size = 0;
-        for(int x : nums){
-            int i = 0, j = size;
-            while(i != j){
-                int m = (i+j)/2;
-                if(tails[m] < x){
-                    i = m+1;
-                }else{
-                    j = m;
-                }
-            }
-            tails[i] = x;
-            if(i == size) size++;
-        }
-        return size;
-    }
+private int LIS(int[] nums){
+      if(nums.length <= 1 ) return nums.length;
+      int[] tails = new int[nums.length];
+      int size = 0;
+      for(int x : nums){
+          int i = 0, j = size;
+          while(i != j){
+              int m = (i+j)/2;
+              if(tails[m] < x){
+                  i = m+1;
+              }else{
+                  j = m;
+              }
+          }
+          tails[i] = x;
+          if(i == size) size++;
+      }
+      return size;
+}
     
 //357. Count Numbers with Unique Digits
 public int countNumbersWithUniqueDigits(int n) {
