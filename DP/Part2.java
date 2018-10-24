@@ -359,6 +359,10 @@ public int maxSumSubmatrix(int[][] matrix, int k) {
 public List<Integer> largestDivisibleSubset(int[] nums) {
     List<Integer> res = new ArrayList<Integer>();
     if(nums.length == 0) return res;
+    if(nums.length == 1){
+        res.add(nums[0]);
+        return res;
+    }
     int[] count = new int[nums.length];
     int[] pre = new int[nums.length];
     int max = Integer.MIN_VALUE, index = -1;
@@ -369,8 +373,8 @@ public List<Integer> largestDivisibleSubset(int[] nums) {
         for(int j = i-1; j >= 0; j--){
             if(nums[i] % nums[j] == 0){
                 if(count[j] + 1 > count[i]){
-                count[i] = count[j] + 1;
-                pre[i] = j;
+                  count[i] = count[j] + 1;
+                  pre[i] = j;
                 }
             }
         }
