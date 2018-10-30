@@ -169,6 +169,7 @@ public int numberOfArithmeticSlices(int[] A) {
         map[i] = new HashMap<Integer,Integer>();
         for(int j = 0; j < i; j++){
             long diff = (long) A[i] - A[j];
+            //add this line simply because test case has extreme values 
             if(diff <= Integer.MIN_VALUE || diff >= Integer.MAX_VALUE) continue;
             int d = (int) diff;
             int c1 = map[i].getOrDefault(d,0);
