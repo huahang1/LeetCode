@@ -340,76 +340,75 @@ public int[] maxSumOfThreeSubarrays(int[] nums, int k) {
 
 //691. Stickers to Spell Word
 public int minStickers(String[] stickers, String target) {
-        int m = stickers.length;
-        int[][] mp = new int[m][26];
-        for(int i = 0; i < m; i++){
-            for(char c :stickers[i].toCharArray()){
-                mp[i][c-'a']++;
-            }
+    int m = stickers.length;
+    int[][] mp = new int[m][26];
+    for(int i = 0; i < m; i++){
+        for(char c :stickers[i].toCharArray()){
+            mp[i][c-'a']++;
         }
-        Map<String,Integer> dp = new HashMap<String,Integer>();
-        dp.put("",0);
-        return helper(mp,dp,target);
     }
+    Map<String,Integer> dp = new HashMap<String,Integer>();
+    dp.put("",0);
+    return helper(mp,dp,target);
+}
     
-    private int helper(int[][] mp, Map<String,Integer> dp, String target){
-        if(dp.containsKey(target)) return dp.get(target);
-        int m = mp.length;
-        int res = Integer.MAX_VALUE;
-        int[] tar = new int[26];
-        for(int i = 0; i < target.length();i++){
-            tar[target.charAt(i)-'a']++;
+private int helper(int[][] mp, Map<String,Integer> dp, String target){
+    if(dp.containsKey(target)) return dp.get(target);
+    int m = mp.length;
+    int res = Integer.MAX_VALUE;
+    int[] tar = new int[26];
+    for(int i = 0; i < target.length();i++){
+        tar[target.charAt(i)-'a']++;
+    }
+    for(int i = 0; i < m; i++){
+        if(mp[i][target.charAt(0)-'a'] == 0){
+            continue;
         }
-        for(int i = 0; i < m; i++){
-            if(mp[i][target.charAt(0)-'a'] == 0){
-                continue;
-            }
-            StringBuilder sb = new StringBuilder();
-            for(int j = 0; j < 26; j++){
-                if(tar[j]>0){
-                    for(int k = 0; k < Math.max(0,tar[j]-mp[i][j]);k++){
-                        sb.append((char)('a'+j));
-                    }
+        StringBuilder sb = new StringBuilder();
+        for(int j = 0; j < 26; j++){
+            if(tar[j]>0){
+                for(int k = 0; k < Math.max(0,tar[j]-mp[i][j]);k++){
+                    sb.append((char)('a'+j));
                 }
-            }
-            String s = sb.toString();
-            int tmp = helper(mp,dp,s);
-            if(tmp != -1){
-                res = Math.min(res,tmp+1);
-            }
+              }
         }
-        if(res == Integer.MAX_VALUE){
-            dp.put(target,-1);
-        }else{
-            dp.put(target,res);
+        String s = sb.toString();
+        int tmp = helper(mp,dp,s);
+        if(tmp != -1){
+            res = Math.min(res,tmp+1);
         }
-        return dp.get(target);
+    }
+    if(res == Integer.MAX_VALUE){
+        dp.put(target,-1);
+    }else{
+        dp.put(target,res);
+    }
+    return dp.get(target);
 }
 
 //698. Partition to K Equal Sum Subsets
 public boolean canPartitionKSubsets(int[] nums, int k) {
-        int sum = 0;
-        for(int num:nums) sum += num;
-        if(k < 0 || sum % k != 0) return false;
-        int[] visited = new int[nums.length];
-        return helper(nums,visited,0,k,0,sum/k);
-    }
-    
-    private boolean helper(int[] nums,int[] visited,int start_index,int k, int curr_sum,int target){
-        if(k == 1) return true;
-        if(curr_sum == target){
-            return helper(nums,visited,0,k-1,0,target);
-        }
-        for(int i = start_index; i < nums.length; i++){
-            if(visited[i] == 0){
-                visited[i] =1;
-                if(helper(nums,visited,i+1,k,curr_sum+nums[i],target)){
-                    return true;
-                }
-                visited[i] = 0;
-            }
-        }
-        return false;
+      int sum = 0;
+      for(int i = 0; i < nums.length; i++){
+          sum += nums[i];
+      }
+      if(k < 0 || sum % k != 0) return false;
+      int[] visited = new int[nums.length];
+      return helper(nums,visited,0,k,0,sum/k);
+}
+private boolean helper(int[] nums, int[] visited, int start_index, int k, int curr_sum, int target){
+      if(k == 1) return true;
+      if(curr_sum == target) return helper(nums,visited,0,k-1,0,target);
+      for(int i = start_index; i < nums.length; i++){
+          if(visited[i] == 0){
+              visited[i] = 1;
+              if(helper(nums,visited,i+1,k,curr_sum+nums[i],target)){
+                  return true;
+              }
+              visited[i] = 0;
+          }
+      }
+      return false;
 }
 
 //712. Minimum ASCII Delete Sum for Two Strings
