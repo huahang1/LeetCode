@@ -431,6 +431,19 @@ public int minimumDeleteSum(String s1, String s2) {
        return dp[m][n];
 }
 
+//714. Best Time to Buy and Sell Stock with Transaction Fee
+public int maxProfit(int[] prices, int fee) {
+        int days = prices.length;
+        int[] buy = new int[days];
+        int[] sell = new int[days];
+        buy[0] = -prices[0]-fee;
+        for(int i = 1; i < days; i++){
+            buy[i] = Math.max(buy[i-1],sell[i-1]-prices[i]-fee);
+            sell[i] = Math.max(sell[i-1],buy[i-1]+prices[i]);
+        }
+        return sell[days-1];
+}
+
 //730. Count Different Palindromic Subsequences
 public int countPalindromicSubsequences(String s) {
         int n = s.length();
